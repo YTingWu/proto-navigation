@@ -4,6 +4,8 @@
 * Navigate to service method definition
 * Set the service file location in .proto files
 
+> **Note:** If the file contains `import "google/protobuf/empty.proto";`, the navigation may be slower.
+
 ## Extension Settings
 
 This extension contributes the following settings:
@@ -13,5 +15,3 @@ This extension contributes the following settings:
 ```markdown
 // service_file = "xxx/xxxService";
 ```
-
-**Enjoy!**
