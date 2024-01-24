@@ -3,7 +3,7 @@
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
   "description": "Implement navigation functionality for proto files.",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0"
@@ -17,6 +17,10 @@
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "extension.setProtoServiceFile",
+        "title": "Set Proto Service File"
+      }
     ]
   },
   "scripts": {

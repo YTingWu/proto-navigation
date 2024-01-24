@@ -52,6 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 					return new vscode.Location(file, new vscode.Position(lineNumber, charNumber));
 				}
 			} catch (error) {
+				serviceFileCache.delete(document.uri.fsPath);
 				vscode.window.showErrorMessage((error as Error).message);
 				return;
 			}
@@ -61,5 +62,15 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.workspace.onDidCloseTextDocument((document) => {
 		docCache.delete(document.uri.fsPath);
 		serviceFileCache.delete(document.uri.fsPath);
+	}));
+
+	context.subscriptions.push(vscode.commands.registerCommand('extension.setProtoServiceFile', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (editor) {
+			const secondLine = new vscode.Position(1, 0);
+			await editor.edit(editBuilder => {
+			editBuilder.insert(secondLine, '// service_file = "xxx/xxxService";\n');
+			});
+		}
 	}));
 }
