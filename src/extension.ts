@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 
 const docCache = new Map<string, vscode.TextDocument>();
 const serviceFileCache = new Map<string, string>();
@@ -21,23 +22,40 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			}
 
-			// Get service_file value from cache or file
 			let serviceFileName = serviceFileCache.get(document.uri.fsPath);
+
 			if (!serviceFileName) {
 				const serviceFileStart = document.getText().indexOf('service_file = "') + 16;
 				const serviceFileEnd = document.getText().indexOf('";', serviceFileStart);
-				if (serviceFileStart < 0 || serviceFileEnd < 0) {
-					vscode.window.showInformationMessage('Could not find service_file option');
-					return;
+
+				if (serviceFileStart === 15 || serviceFileEnd < 0) {
+					const serviceFile = await findFunctionService(methodName, document.uri.fsPath);
+					if (serviceFile) {
+						serviceFileName = serviceFile.fsPath;
+						serviceFileCache.set(document.uri.fsPath, serviceFileName);
+					} else {
+						vscode.commands.executeCommand('extension.setProtoServiceFile');
+						return;
+					}
+				} else {
+					serviceFileName = document.getText().substring(serviceFileStart, serviceFileEnd);
+					if (serviceFileName === 'xxx/xxxService') {
+						vscode.window.showInformationMessage('Please set service_file option');
+						return;
+					}
+					serviceFileCache.set(document.uri.fsPath, serviceFileName);
 				}
-				serviceFileName = document.getText().substring(serviceFileStart, serviceFileEnd);
-				serviceFileCache.set(document.uri.fsPath, serviceFileName);
 			}
 
 			// Navigate to implementation
-			const protoFilePath = document.uri.fsPath;
-			const dir = path.dirname(protoFilePath);
-			const file = vscode.Uri.file(path.join(dir, `../${serviceFileName}.cs`));
+			const protoDir = path.dirname(document.uri.fsPath);
+			let serviceFilePath = path.join(protoDir, `../${serviceFileName}.cs`);
+
+			if (serviceFileName.endsWith('.cs')) {
+				serviceFilePath = serviceFileName;
+			}
+
+			const file = vscode.Uri.file(serviceFilePath);
 
 			try {
 				let doc = docCache.get(file.fsPath);
@@ -59,10 +77,31 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 
-	context.subscriptions.push(vscode.workspace.onDidCloseTextDocument((document) => {
-		docCache.delete(document.uri.fsPath);
-		serviceFileCache.delete(document.uri.fsPath);
-	}));
+	function findFunctionService(functionName: string, currentFilePath: string): Thenable<vscode.Uri | undefined> {
+		return new Promise((resolve, reject) => {
+			const currentDir = path.dirname(currentFilePath);
+			const parentDir = path.join(currentDir, '..');
+
+			const files = vscode.workspace.findFiles(new vscode.RelativePattern(parentDir, '**/*Service.cs'), '{**/bin/**,**/obj/**}');
+			files.then((files) => {
+				for (const file of files) {
+					const content = fs.readFileSync(file.fsPath, 'utf-8');
+					if (content.includes(functionName)) {
+						resolve(file);
+						return;
+					}
+				}
+				resolve(undefined);
+			}, (error) => {
+				reject(error);
+			});
+		});
+	}
+
+	// context.subscriptions.push(vscode.workspace.onDidCloseTextDocument((document) => {
+	// 	docCache.delete(document.uri.fsPath);
+	// 	serviceFileCache.delete(document.uri.fsPath);
+	// }));
 
 	context.subscriptions.push(vscode.commands.registerCommand('extension.setProtoServiceFile', async () => {
 		const editor = vscode.window.activeTextEditor;

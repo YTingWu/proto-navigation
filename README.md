@@ -6,6 +6,14 @@
 
 > **Note:** If the file contains `import "google/protobuf/empty.proto";`, the navigation may be slower.
 
+## Setting the Service File
+
+There are two ways to set the service file in this extension:
+
+1. Use the `extension.setProtoServiceFile` command. This allows you to manually specify the service file.
+
+2. Allow the extension to search for the service file within the `src/Presentation` directory and its subdirectories. This method specifically looks for files ending with `service.cs`. Please note that this method may have slightly lower performance compared to the first method due to the file searching process.
+
 ## Extension Settings
 
 This extension contributes the following settings:
