@@ -22,60 +22,87 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			}
 
-			let serviceFileName = serviceFileCache.get(document.uri.fsPath);
-
+			let serviceFileName = await getServiceFile(document, methodName);
 			if (!serviceFileName) {
-				const serviceFileStart = document.getText().indexOf('service_file = "') + 16;
-				const serviceFileEnd = document.getText().indexOf('";', serviceFileStart);
-
-				if (serviceFileStart === 15 || serviceFileEnd < 0) {
-					const serviceFile = await findFunctionService(methodName, document.uri.fsPath);
-					if (serviceFile) {
-						serviceFileName = serviceFile.fsPath;
-						serviceFileCache.set(document.uri.fsPath, serviceFileName);
-					} else {
-						vscode.commands.executeCommand('extension.setProtoServiceFile');
-						return;
-					}
-				} else {
-					serviceFileName = document.getText().substring(serviceFileStart, serviceFileEnd);
-					if (serviceFileName === 'xxx/xxxService') {
-						vscode.window.showInformationMessage('Please set service_file option');
-						return;
-					}
-					serviceFileCache.set(document.uri.fsPath, serviceFileName);
-				}
-			}
-
-			// Navigate to implementation
-			const protoDir = path.dirname(document.uri.fsPath);
-			let serviceFilePath = path.join(protoDir, `../${serviceFileName}.cs`);
-
-			if (serviceFileName.endsWith('.cs')) {
-				serviceFilePath = serviceFileName;
-			}
-
-			const file = vscode.Uri.file(serviceFilePath);
-
-			try {
-				let doc = docCache.get(file.fsPath);
-				if (!doc) {
-					doc = await vscode.workspace.openTextDocument(file);
-					docCache.set(file.fsPath, doc);
-				}
-				const line = methodName + '(';
-				const lineNumber = doc.positionAt(doc.getText().indexOf(line)).line;
-				const charNumber = doc.getText().substring(doc.offsetAt(new vscode.Position(lineNumber, 0))).indexOf(line);
-				if (lineNumber > 0 && charNumber > 0) {
-					return new vscode.Location(file, new vscode.Position(lineNumber, charNumber));
-				}
-			} catch (error) {
-				serviceFileCache.delete(document.uri.fsPath);
-				vscode.window.showErrorMessage((error as Error).message);
 				return;
 			}
+
+			const protoDir = path.dirname(document.uri.fsPath);
+            let serviceFilePath = serviceFileName.endsWith('.cs') ? serviceFileName : path.join(protoDir, `../${serviceFileName}.cs`);
+
+            let file = vscode.Uri.file(serviceFilePath);
+            let doc = await getDocument(file);
+
+            const line = methodName + '(';
+            let lineNumber = doc.positionAt(doc.getText().indexOf(line)).line;
+            if (lineNumber === 0) {
+                const result = await updateServiceFileAndDocument(serviceFileName, document, methodName, protoDir);
+                if (!result) {
+                    return;
+                }
+
+                ({ serviceFileName, file, doc } = result);
+                lineNumber = doc.positionAt(doc.getText().indexOf(line)).line;
+			}
+
+			let charNumber = doc.getText().substring(doc.offsetAt(new vscode.Position(lineNumber, 0))).indexOf(line);
+            if (lineNumber > 0 && charNumber > 0) {
+                return new vscode.Location(file, new vscode.Position(lineNumber, charNumber));
+            }
 		}
 	}));
+
+	async function getServiceFile(document: vscode.TextDocument, methodName: string): Promise<string | null> {
+		let serviceFileName = serviceFileCache.get(document.uri.fsPath);
+		if (!serviceFileName) {
+			const serviceFileStart = document.getText().indexOf('service_file = "') + 16;
+			const serviceFileEnd = document.getText().indexOf('";', serviceFileStart);
+
+			if (serviceFileStart === 15 || serviceFileEnd < 0) {
+				const serviceFile = await findFunctionService(methodName, document.uri.fsPath);
+				if (serviceFile) {
+					serviceFileName = serviceFile.fsPath;
+					serviceFileCache.set(document.uri.fsPath, serviceFileName);
+				} else {
+					vscode.commands.executeCommand('extension.setProtoServiceFile');
+					return null;
+				}
+			} else {
+				serviceFileName = document.getText().substring(serviceFileStart, serviceFileEnd);
+				if (serviceFileName === 'xxx/xxxService') {
+					vscode.window.showInformationMessage('Please set service_file option');
+					return null;
+				}
+				serviceFileCache.set(document.uri.fsPath, serviceFileName);
+			}
+		}
+		return serviceFileName;
+	}
+
+	async function getDocument(file: vscode.Uri): Promise<vscode.TextDocument> {
+		let doc = docCache.get(file.fsPath);
+		if (!doc) {
+			doc = await vscode.workspace.openTextDocument(file);
+			docCache.set(file.fsPath, doc);
+		}
+		return doc;
+	}
+
+	async function updateServiceFileAndDocument(serviceFileName: string, document: vscode.TextDocument, methodName: string, protoDir: string) {
+		serviceFileCache.delete(document.uri.fsPath);
+		const serviceFile = await findFunctionService(methodName, document.uri.fsPath);
+		if (!serviceFile) {
+			return null;
+		}
+	
+		serviceFileName = serviceFile.fsPath;
+		serviceFileCache.set(document.uri.fsPath, serviceFileName);
+		const serviceFilePath = serviceFileName.endsWith('.cs') ? serviceFileName : path.join(protoDir, `../${serviceFileName}.cs`);
+		const file = vscode.Uri.file(serviceFilePath);
+		const doc = await getDocument(file);
+	
+		return { serviceFileName, file, doc };
+	}
 
 	function findFunctionService(functionName: string, currentFilePath: string): Thenable<vscode.Uri | undefined> {
 		return new Promise((resolve, reject) => {

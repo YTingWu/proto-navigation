@@ -1,18 +1,20 @@
 ## Features
 
+![Example](images/demo.gif)
+
 * Navigate to message definition
 * Navigate to service method definition
 * Set the service file location in .proto files
 
-> **Note:** If the file contains `import "google/protobuf/empty.proto";`, the navigation may be slower.
+> **Note:** Please note that if your `.proto` file imports external `.proto` files, such as `google/protobuf/empty.proto`, the navigation process might be slower.
 
 ## Setting the Service File
 
 There are two ways to set the service file in this extension:
 
-1. Use the `extension.setProtoServiceFile` command. This allows you to manually specify the service file.
+1. Allow the extension to search for the service file within the parent directory of the current `.proto` file and its subdirectories. This method specifically looks for files ending with `service.cs`. Please note that this method may have slightly lower performance compared to the second method due to the file searching process.
 
-2. Allow the extension to search for the service file within the `src/Presentation` directory and its subdirectories. This method specifically looks for files ending with `service.cs`. Please note that this method may have slightly lower performance compared to the first method due to the file searching process.
+2. Use the `extension.setProtoServiceFile` command. This allows you to manually specify the service file.
 
 ## Extension Settings
 
