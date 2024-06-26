@@ -64,7 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
 					serviceFileName = serviceFile.fsPath;
 					serviceFileCache.set(document.uri.fsPath, serviceFileName);
 				} else {
-					vscode.commands.executeCommand('extension.setProtoServiceFile');
+					// vscode.commands.executeCommand('extension.setProtoServiceFile');
 					return null;
 				}
 			} else {
