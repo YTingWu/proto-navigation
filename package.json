@@ -3,7 +3,7 @@
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
   "description": "Implement navigation functionality for proto files.",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0"
