@@ -2,9 +2,10 @@
 
 ![Example](images/demo.gif)
 
-* Navigate to message definition
-* Navigate to service method definition
-* Set the service file location in .proto files
+* Press **F12** (Go to Definition) in a `.proto` file to navigate directly to message definitions in your codebase
+* Press **F12** on service method definitions to jump to the corresponding service implementation file
+* Automatically detect and set the service file location in `.proto` files
+* Supports manual service file configuration for more control
 
 > **Note:** Please note that if your `.proto` file imports external `.proto` files, such as `google/protobuf/empty.proto`, the navigation process might be slower.
 
