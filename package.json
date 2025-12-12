@@ -28,7 +28,7 @@
     ]
   },
   "extensionDependencies": [
-    "drblury.protobuf-vsc"
+    "zxh404.vscode-proto3"
   ],
   "scripts": {
     "vscode:prepublish": "npm run package",
