@@ -4,6 +4,26 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.0] – 2026-02-09
+
+### Added
+- **Built-in Syntax Highlighting**: Added native TextMate grammar for `.proto` files, eliminating external extension dependency
+  - Complete proto2 and proto3 syntax support (based on protobuf-vsc grammar)
+  - Highlights keywords, comments, strings, messages, services, RPCs, options, and more
+- **Enhanced Navigation for Request/Response**: Both "Go to Definition" (`F12`) and "Go to Implementation" (`Cmd/Ctrl+F12`) now navigate to message definitions in proto files for Request/Response types
+  - Previously, `Cmd+F12` on Request/Response returned nothing
+  - Now provides consistent navigation experience for message types
+
+### Changed
+- **Breaking:** Removed `DrBlury.protobuf-vsc` from extension dependencies
+  - Extension now provides its own syntax highlighting
+  - Users no longer need to install external protobuf extensions
+  - If you were using DrBlury's advanced features (diagnostics, formatting, compilation), you'll need to install it separately
+- Implementation Provider behavior: now returns proto definition for message types instead of nothing
+
+### Fixed
+- `Cmd/Ctrl+F12` (Go to Implementation) now works on Request/Response message types
+
 ## [0.1.2] – 2026-02-09
 
 ### Changed

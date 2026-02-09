@@ -8,8 +8,10 @@
 
 ### 🎯 Smart Navigation
 - **Go to Definition** (`F12`) — Navigate to message definitions or service implementations
-- **Go to Implementation** (`Cmd/Ctrl+F12`) — Jump directly to C# or Python service methods
+- **Go to Implementation** (`Cmd/Ctrl+F12`) — Jump to service methods or message definitions
 - **Peek Definition** (`Alt/Option+F12`) — Preview implementations without leaving your file
+
+For **Request/Response** message types, both `F12` and `Cmd/Ctrl+F12` navigate to the message definition within the proto file. For **service methods**, they navigate to the C# or Python implementation.
 
 ### 🔍 Intelligent Search
 - **Automatic Discovery** — Finds `*Service.cs` and `*Service.py` files in your project
@@ -28,9 +30,9 @@
 
 ### 1️⃣ Installation
 
-This extension requires [Protobuf/gRPC Support](https://marketplace.visualstudio.com/items?itemName=DrBlury.protobuf-vsc), which will be installed automatically.
+Install the extension from the VS Code Marketplace. The extension includes built-in syntax highlighting for `.proto` files.
 
-> 💡 **Migrating from vscode-proto3?** You can safely uninstall `zxh404.vscode-proto3` after updating to v0.1.0+
+> 💡 **Migrating from v0.1.x?** Version 0.2.0+ includes independent syntax highlighting and no longer requires the `DrBlury.protobuf-vsc` extension.
 
 ### 2️⃣ Basic Usage
 
@@ -66,8 +68,8 @@ Add a directive in your `.proto` file:
 
 | Keyboard Shortcut | Action | What It Does |
 |---|---|---|
-| `F12` | Go to Definition | Jump to message or service implementation |
-| `Cmd/Ctrl+F12` | Go to Implementation | Go directly to the method implementation |
+| `F12` | Go to Definition | Jump to message definition in proto file, or service implementation in C#/Python |
+| `Cmd/Ctrl+F12` | Go to Implementation | For Request/Response: jump to proto definition; for methods: jump to C#/Python implementation |
 | `Alt/Option+F12` | Peek Definition | Quick preview in a popup window |
 
 ---

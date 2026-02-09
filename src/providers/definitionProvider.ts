@@ -59,10 +59,10 @@ export class ProtoDefinitionProvider implements vscode.DefinitionProvider, vscod
 		const word = document.getText(range);
 		this.log(`Word at position: "${word}"`, 'ImplementationProvider');
 
-		// Implementation provider only works for service methods, not message types
+		// For message types (Request/Response), show proto definition as implementation
 		if (isMessageType(word)) {
-			this.log(`"${word}" is a message type, no implementation to show`, 'ImplementationProvider');
-			return undefined;
+			this.log(`"${word}" is a message type, navigating to proto definition`, 'ImplementationProvider');
+			return this.navigateToMessageDefinition(document, word);
 		}
 
 		this.log(`"${word}" is a service method, navigating to implementation`, 'ImplementationProvider');

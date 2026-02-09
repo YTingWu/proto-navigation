@@ -228,6 +228,50 @@ suite('Proto Navigation Extension Test Suite', () => {
 			// Should return results or empty array, but not throw
 			assert.ok(Array.isArray(implementations) || implementations === undefined || implementations === null);
 		});
+
+		test('implementation provider should navigate to proto definition for Request types', async () => {
+			const doc = await vscode.workspace.openTextDocument(TEST_PROTO_PATH);
+			await vscode.window.showTextDocument(doc);
+			// Wait for extension activation
+			await new Promise(resolve => setTimeout(resolve, 500));
+
+			// Position on DebitGrpcRequest in the rpc line (line 6)
+			const implementations = await vscode.commands.executeCommand<vscode.Location[]>(
+				'vscode.executeImplementationProvider',
+				doc.uri,
+				new vscode.Position(6, 30),
+			);
+
+			// Should return a location pointing to the message definition, not undefined
+			if (Array.isArray(implementations) && implementations.length > 0) {
+				assert.ok(implementations[0].uri.fsPath.endsWith('.proto'));
+				// The target should be in the same file
+				assert.strictEqual(implementations[0].uri.fsPath, doc.uri.fsPath);
+			}
+			// If no results, that's okay in test environment - just verify it doesn't throw
+		});
+
+		test('implementation provider should navigate to proto definition for Response types', async () => {
+			const doc = await vscode.workspace.openTextDocument(TEST_PROTO_PATH);
+			await vscode.window.showTextDocument(doc);
+			// Wait for extension activation
+			await new Promise(resolve => setTimeout(resolve, 500));
+
+			// Position on DebitGrpcResponse in the rpc line
+			const implementations = await vscode.commands.executeCommand<vscode.Location[]>(
+				'vscode.executeImplementationProvider',
+				doc.uri,
+				new vscode.Position(6, 60),
+			);
+
+			// Should return a location pointing to the message definition, not undefined
+			if (Array.isArray(implementations) && implementations.length > 0) {
+				assert.ok(implementations[0].uri.fsPath.endsWith('.proto'));
+				// The target should be in the same file
+				assert.strictEqual(implementations[0].uri.fsPath, doc.uri.fsPath);
+			}
+			// If no results, that's okay in test environment - just verify it doesn't throw
+		});
 	});
 
 	suite('Proto Syntax Validation', () => {

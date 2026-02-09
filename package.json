@@ -3,7 +3,7 @@
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
   "description": "Navigate seamlessly from .proto files to C# and Python service implementations with F12 and Cmd+F12",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0",
@@ -47,6 +47,13 @@
         ]
       }
     ],
+    "grammars": [
+      {
+        "language": "proto",
+        "scopeName": "source.proto",
+        "path": "./syntaxes/proto.tmLanguage.json"
+      }
+    ],
     "commands": [
       {
         "command": "extension.setProtoServiceFile",
@@ -68,9 +75,7 @@
       }
     }
   },
-  "extensionDependencies": [
-    "DrBlury.protobuf-vsc"
-  ],
+
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",

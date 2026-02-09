@@ -1,0 +1,968 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Protocol Buffers",
+  "scopeName": "source.proto",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#syntax" },
+    { "include": "#edition" },
+    { "include": "#package" },
+    { "include": "#import" },
+    { "include": "#option" },
+    { "include": "#message" },
+    { "include": "#enum" },
+    { "include": "#service" },
+    { "include": "#extend" },
+    { "include": "#reserved" },
+    { "include": "#extensions" },
+    { "include": "#oneof" },
+    { "include": "#map" },
+    { "include": "#group" },
+    { "include": "#field" },
+    { "include": "#rpc" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#constants" },
+    { "include": "#types" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.proto",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.proto",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "syntax": {
+      "match": "\\b(syntax)\\s*(=)\\s*(\"proto[23]\")\\s*(;)",
+      "captures": {
+        "1": { "name": "keyword.control.syntax.proto" },
+        "2": { "name": "keyword.operator.assignment.proto" },
+        "3": { "name": "string.quoted.double.proto" },
+        "4": { "name": "punctuation.terminator.proto" }
+      }
+    },
+    "edition": {
+      "match": "\\b(edition)\\s*(=)\\s*(\"[^\"]+\")\\s*(;)",
+      "captures": {
+        "1": { "name": "keyword.control.edition.proto" },
+        "2": { "name": "keyword.operator.assignment.proto" },
+        "3": { "name": "string.quoted.double.proto" },
+        "4": { "name": "punctuation.terminator.proto" }
+      }
+    },
+    "package": {
+      "match": "\\b(package)\\s+([\\w.]+)\\s*(;)",
+      "captures": {
+        "1": { "name": "keyword.control.package.proto" },
+        "2": { "name": "entity.name.namespace.proto" },
+        "3": { "name": "punctuation.terminator.proto" }
+      }
+    },
+    "import": {
+      "match": "\\b(import)\\s+(weak|public)?\\s*(\"[^\"]+\")\\s*(;)",
+      "captures": {
+        "1": { "name": "keyword.control.import.proto" },
+        "2": { "name": "keyword.control.import.modifier.proto" },
+        "3": { "name": "string.quoted.double.proto" },
+        "4": { "name": "punctuation.terminator.proto" }
+      }
+    },
+    "option": {
+      "patterns": [
+        {
+          "comment": "Google API HTTP option with aggregate value",
+          "begin": "\\b(option)\\s+(\\(google\\.api\\.http\\))\\s*=\\s*\\{",
+          "end": "\\}\\s*;",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.option.proto" },
+            "2": { "name": "variable.other.option.googleapi.proto" }
+          },
+          "patterns": [{ "include": "#googleApiHttpBody" }]
+        },
+        {
+          "comment": "Google API resource option with aggregate value",
+          "begin": "\\b(option)\\s+(\\(google\\.api\\.resource\\))\\s*=\\s*\\{",
+          "end": "\\}\\s*;",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.option.proto" },
+            "2": { "name": "variable.other.option.googleapi.proto" }
+          },
+          "patterns": [{ "include": "#googleApiResourceBody" }]
+        },
+        {
+          "comment": "CEL validation option with aggregate value",
+          "begin": "\\b(option)\\s+(\\([\\w.]+\\)(?:\\.[\\w]+)*)\\s*=\\s*\\{",
+          "end": "\\}\\s*;",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.option.proto" },
+            "2": { "name": "variable.other.option.proto" }
+          },
+          "patterns": [{ "include": "#celOptionBody" }]
+        },
+        {
+          "begin": "\\b(option)\\s+",
+          "end": "(;)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.option.proto" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.terminator.proto" }
+          },
+          "patterns": [
+            { "include": "#optionName" },
+            { "include": "#strings" },
+            { "include": "#numbers" },
+            { "include": "#constants" },
+            {
+              "match": "(=)",
+              "name": "keyword.operator.assignment.proto"
+            }
+          ]
+        }
+      ]
+    },
+    "googleApiHttpBody": {
+      "patterns": [
+        { "include": "#comments" },
+        {
+          "comment": "HTTP method keywords (get, post, put, delete, patch)",
+          "match": "\\b(get|post|put|delete|patch)\\s*:",
+          "captures": {
+            "1": { "name": "keyword.control.http.method.proto" }
+          }
+        },
+        {
+          "comment": "HTTP custom method block",
+          "begin": "\\b(custom)\\s*:\\s*\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.http.method.proto" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            {
+              "match": "\\b(kind|path)\\s*:",
+              "captures": {
+                "1": { "name": "support.type.property-name.http.proto" }
+              }
+            },
+            { "include": "#strings" }
+          ]
+        },
+        {
+          "comment": "HTTP body and response_body fields",
+          "match": "\\b(body|response_body)\\s*:",
+          "captures": {
+            "1": { "name": "support.type.property-name.http.proto" }
+          }
+        },
+        {
+          "comment": "Additional bindings block",
+          "begin": "\\b(additional_bindings)\\s*\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "1": { "name": "support.type.property-name.http.proto" }
+          },
+          "patterns": [{ "include": "#googleApiHttpBody" }]
+        },
+        {
+          "comment": "HTTP path template variables",
+          "match": "\\{([^}]+)\\}",
+          "captures": {
+            "0": { "name": "variable.parameter.path.proto" },
+            "1": { "name": "variable.parameter.path.name.proto" }
+          }
+        },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#constants" }
+      ]
+    },
+    "googleApiResourceBody": {
+      "patterns": [
+        { "include": "#comments" },
+        {
+          "comment": "Resource property names",
+          "match": "\\b(type|pattern|name_field|plural|singular|history|style)\\s*:",
+          "captures": {
+            "1": { "name": "support.type.property-name.resource.proto" }
+          }
+        },
+        {
+          "comment": "Resource history enum values",
+          "match": "\\b(ORIGINALLY_SINGLE_PATTERN|FUTURE_MULTI_PATTERN)\\b",
+          "name": "constant.language.resource.history.proto"
+        },
+        {
+          "comment": "Resource style enum values",
+          "match": "\\b(DECLARATIVE_FRIENDLY)\\b",
+          "name": "constant.language.resource.style.proto"
+        },
+        {
+          "comment": "Resource pattern variables",
+          "match": "\\{([^}]+)\\}",
+          "captures": {
+            "0": { "name": "variable.parameter.resource.proto" },
+            "1": { "name": "variable.parameter.resource.name.proto" }
+          }
+        },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#constants" }
+      ]
+    },
+    "celOptionBody": {
+      "patterns": [
+        { "include": "#comments" },
+        {
+          "comment": "CEL option field with string value containing CEL expression",
+          "begin": "\\b(expression)\\s*:\\s*",
+          "end": "(?=\\b(?:id|message|expression)\\s*:|\\})",
+          "beginCaptures": {
+            "1": { "name": "support.type.property-name.cel.proto" }
+          },
+          "patterns": [{ "include": "#celExpressionString" }]
+        },
+        {
+          "comment": "CEL option field names",
+          "match": "\\b(id|message)\\s*:",
+          "captures": {
+            "1": { "name": "support.type.property-name.cel.proto" }
+          }
+        },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#constants" }
+      ]
+    },
+    "celExpressionString": {
+      "patterns": [
+        {
+          "comment": "CEL raw string literal (r\"...\" or R\"...\")",
+          "name": "string.quoted.double.raw.cel.proto",
+          "begin": "[rR]\"",
+          "end": "\"",
+          "patterns": [{ "include": "#celExpressionContent" }]
+        },
+        {
+          "comment": "CEL triple-quoted string (\"\"\"...\"\"\")",
+          "name": "string.quoted.double.triple.cel.proto",
+          "begin": "\"\"\"",
+          "end": "\"\"\"",
+          "patterns": [{ "include": "#celExpressionContent" }]
+        },
+        {
+          "comment": "CEL triple-quoted string ('''...''')",
+          "name": "string.quoted.single.triple.cel.proto",
+          "begin": "'''",
+          "end": "'''",
+          "patterns": [{ "include": "#celExpressionContent" }]
+        },
+        {
+          "comment": "CEL bytes literal (b\"...\" or B\"...\")",
+          "name": "string.quoted.double.bytes.cel.proto",
+          "begin": "[bB]\"",
+          "end": "\"",
+          "patterns": [{ "include": "#celExpressionContent" }]
+        },
+        {
+          "name": "string.quoted.double.cel.proto",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [{ "include": "#celExpressionContent" }]
+        },
+        {
+          "name": "string.quoted.single.cel.proto",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.proto",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "celExpressionContent": {
+      "patterns": [
+        {
+          "name": "constant.character.escape.proto",
+          "match": "\\\\."
+        },
+        {
+          "comment": "CEL this keyword",
+          "name": "variable.language.this.cel.proto",
+          "match": "\\bthis\\b"
+        },
+        {
+          "comment": "CEL field access after this",
+          "match": "(?<=this\\.)([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "variable.other.property.cel.proto" }
+          }
+        },
+        {
+          "comment": "CEL built-in functions",
+          "name": "support.function.cel.proto",
+          "match": "\\b(has|size|exists|all|exists_one|filter|map|type|dyn|int|uint|double|bool|string|bytes|list|timestamp|duration|matches|startsWith|endsWith|contains|getDate|getDayOfMonth|getDayOfWeek|getDayOfYear|getFullYear|getHours|getMilliseconds|getMinutes|getMonth|getSeconds|null_type)\\b"
+        },
+        {
+          "comment": "CEL comparison operators",
+          "name": "keyword.operator.comparison.cel.proto",
+          "match": "==|!=|<=|>=|<|>"
+        },
+        {
+          "comment": "CEL logical operators",
+          "name": "keyword.operator.logical.cel.proto",
+          "match": "\\|\\||&&|!"
+        },
+        {
+          "comment": "CEL arithmetic operators",
+          "name": "keyword.operator.arithmetic.cel.proto",
+          "match": "\\+|-|\\*|/|%"
+        },
+        {
+          "comment": "CEL ternary operator",
+          "name": "keyword.operator.ternary.cel.proto",
+          "match": "\\?|:"
+        },
+        {
+          "comment": "CEL membership operator",
+          "name": "keyword.operator.membership.cel.proto",
+          "match": "\\bin\\b"
+        },
+        {
+          "comment": "CEL boolean literals",
+          "name": "constant.language.boolean.cel.proto",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "comment": "CEL null literal",
+          "name": "constant.language.null.cel.proto",
+          "match": "\\bnull\\b"
+        },
+        {
+          "comment": "CEL hex integer literals (0x... or 0X...)",
+          "name": "constant.numeric.hex.cel.proto",
+          "match": "\\b-?0[xX][0-9a-fA-F]+([uU])?\\b"
+        },
+        {
+          "comment": "CEL unsigned integer literals (123u or 123U)",
+          "name": "constant.numeric.unsigned.cel.proto",
+          "match": "\\b-?\\d+[uU]\\b"
+        },
+        {
+          "comment": "CEL float literals with exponent",
+          "name": "constant.numeric.float.cel.proto",
+          "match": "\\b-?\\d*\\.\\d+([eE][+-]?\\d+)?\\b|\\b-?\\d+[eE][+-]?\\d+\\b"
+        },
+        {
+          "comment": "CEL integer literals",
+          "name": "constant.numeric.integer.cel.proto",
+          "match": "\\b-?\\d+\\b"
+        },
+        {
+          "comment": "CEL reserved words (cannot be used as identifiers)",
+          "name": "keyword.reserved.cel.proto",
+          "match": "\\b(as|break|const|continue|else|for|function|if|import|let|loop|package|namespace|return|var|void|while)\\b"
+        },
+        {
+          "comment": "CEL list literal brackets",
+          "name": "punctuation.definition.brackets.cel.proto",
+          "match": "\\[|\\]"
+        },
+        {
+          "comment": "CEL map/message literal braces",
+          "name": "punctuation.definition.braces.cel.proto",
+          "match": "\\{|\\}"
+        },
+        {
+          "comment": "CEL identifiers (variables, field names)",
+          "name": "variable.other.cel.proto",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+        }
+      ]
+    },
+    "optionName": {
+      "patterns": [
+        {
+          "comment": "Google API option names",
+          "match": "\\((google\\.api\\.(http|field_behavior|resource|resource_reference|method_signature|default_host|oauth_scopes))\\)",
+          "captures": {
+            "1": { "name": "variable.other.option.googleapi.proto" }
+          }
+        },
+        {
+          "match": "\\(([\\w.]+)\\)",
+          "captures": {
+            "1": { "name": "variable.other.option.proto" }
+          }
+        },
+        {
+          "match": "\\b(java_package|java_outer_classname|java_multiple_files|java_generate_equals_and_hash|java_string_check_utf8|optimize_for|go_package|cc_generic_services|java_generic_services|py_generic_services|php_generic_services|deprecated|cc_enable_arenas|objc_class_prefix|csharp_namespace|swift_prefix|php_class_prefix|php_namespace|php_metadata_namespace|ruby_package|features|unverified_lazy|debug_redact|retention|targets|edition_defaults|uninterpreted_option)\\b",
+          "name": "support.other.option.proto"
+        },
+        {
+          "comment": "Field behavior enum values",
+          "match": "\\b(REQUIRED|OUTPUT_ONLY|INPUT_ONLY|IMMUTABLE|OPTIONAL|NON_EMPTY_DEFAULT|IDENTIFIER|UNORDERED_LIST)\\b",
+          "name": "constant.language.field_behavior.proto"
+        }
+      ]
+    },
+    "fieldOptions": {
+      "begin": "\\[",
+      "end": "\\]",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.brackets.begin.proto" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.brackets.end.proto" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#constants" },
+        { "include": "#numbers" },
+        { "include": "#strings" },
+        { "include": "#optionName" },
+        { "include": "#subOptionValue" },
+        {
+          "match": "(=)",
+          "name": "keyword.operator.assignment.proto"
+        },
+        {
+          "match": "(,)",
+          "name": "punctuation.separator.proto"
+        }
+      ]
+    },
+    "subOptionValue": {
+      "begin": "\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.block.begin.proto" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.end.proto" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#constants" },
+        { "include": "#numbers" },
+        { "include": "#strings" },
+        { "include": "#subOptionValue" },
+        {
+          "match": "(\\w+)\\s*(:)",
+          "captures": {
+            "1": { "name": "support.type.property-name.proto" },
+            "2": { "name": "punctuation.separator.key-value.proto" }
+          }
+        }
+      ]
+    },
+    "message": {
+      "begin": "\\b(message)\\s+(\\w+)\\s*(\\{)?",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.message.proto" },
+        "2": { "name": "entity.name.type.message.proto" },
+        "3": { "name": "punctuation.definition.block.proto" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.proto" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#option" },
+        { "include": "#message" },
+        { "include": "#enum" },
+        { "include": "#oneof" },
+        { "include": "#map" },
+        { "include": "#reserved" },
+        { "include": "#extensions" },
+        { "include": "#extend" },
+        { "include": "#group" },
+        { "include": "#field" },
+        {
+          "comment": "Opening brace on next line",
+          "match": "\\{",
+          "name": "punctuation.definition.block.proto"
+        }
+      ]
+    },
+    "enum": {
+      "begin": "\\b(enum)\\s+(\\w+)\\s*(\\{)?",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.enum.proto" },
+        "2": { "name": "entity.name.type.enum.proto" },
+        "3": { "name": "punctuation.definition.block.proto" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.proto" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#option" },
+        { "include": "#enumValue" },
+        { "include": "#reserved" },
+        {
+          "comment": "Opening brace on next line",
+          "match": "\\{",
+          "name": "punctuation.definition.block.proto"
+        }
+      ]
+    },
+    "enumValue": {
+      "begin": "\\b([A-Za-z_]\\w*)\\s*(=)\\s*(-?0[xX][0-9a-fA-F]+|-?\\d+)",
+      "beginCaptures": {
+        "1": { "name": "variable.other.enummember.proto" },
+        "2": { "name": "keyword.operator.assignment.proto" },
+        "3": { "name": "constant.numeric.proto" }
+      },
+      "end": "(;)",
+      "endCaptures": {
+        "1": { "name": "punctuation.terminator.proto" }
+      },
+      "patterns": [{ "include": "#fieldOptions" }]
+    },
+    "service": {
+      "begin": "\\b(service)\\s+(\\w+)\\s*(\\{)?",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.service.proto" },
+        "2": { "name": "entity.name.type.service.proto" },
+        "3": { "name": "punctuation.definition.block.proto" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.proto" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#option" },
+        { "include": "#rpc" },
+        {
+          "comment": "Opening brace on next line",
+          "match": "\\{",
+          "name": "punctuation.definition.block.proto"
+        }
+      ]
+    },
+    "rpc_keywords": {
+      "patterns": [
+        {
+          "comment": "RPC request type definition",
+          "match": "\\(\\s*(stream)?\\s*([\\w.]+)\\s*\\)",
+          "captures": {
+            "1": { "name": "keyword.control.stream.proto" },
+            "2": { "name": "entity.name.type.proto" }
+          }
+        },
+        {
+          "comment": "RPC return type definition",
+          "match": "\\b(returns)\\b",
+          "captures": {
+            "1": { "name": "storage.modifier.returns.proto" }
+          }
+        },
+        {
+          "comment": "opening brace for options block",
+          "match": "(\\{)",
+          "name": "punctuation.definition.block.proto"
+        }
+      ]
+    },
+    "rpc": {
+      "patterns": [
+        {
+          "comment": "RPC with multi-line definition",
+          "begin": "(rpc)\\s+(\\w+)",
+          "end": "\\}|(;)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.rpc.proto" },
+            "2": { "name": "entity.name.function.rpc.proto" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.terminator.proto" }
+          },
+          "patterns": [
+            { "include": "#rpc_keywords" },
+            { "include": "#comments" },
+            { "include": "#option" }
+          ]
+        }
+      ]
+    },
+    "oneof": {
+      "begin": "\\b(oneof)\\s+(\\w+)\\s*(\\{)?",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.oneof.proto" },
+        "2": { "name": "variable.other.oneof.proto" },
+        "3": { "name": "punctuation.definition.block.proto" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.proto" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#option" },
+        { "include": "#field" },
+        {
+          "comment": "Opening brace on next line",
+          "match": "\\{",
+          "name": "punctuation.definition.block.proto"
+        }
+      ]
+    },
+    "extend": {
+      "begin": "\\b(extend)\\s+([\\w.]+)\\s*(\\{)?",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.extend.proto" },
+        "2": { "name": "entity.name.type.proto" },
+        "3": { "name": "punctuation.definition.block.proto" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.proto" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#field" },
+        {
+          "comment": "Opening brace on next line",
+          "match": "\\{",
+          "name": "punctuation.definition.block.proto"
+        }
+      ]
+    },
+    "reserved": {
+      "match": "\\b(reserved)\\s+(.+);",
+      "captures": {
+        "1": { "name": "keyword.control.reserved.proto" },
+        "2": {
+          "patterns": [
+            { "include": "#strings" },
+            { "include": "#numbers" },
+            {
+              "match": "\\bto\\b",
+              "name": "keyword.control.to.proto"
+            },
+            {
+              "match": "\\bmax\\b",
+              "name": "keyword.control.max.proto"
+            }
+          ]
+        }
+      }
+    },
+    "extensions": {
+      "match": "\\b(extensions)\\s+(.+);",
+      "captures": {
+        "1": { "name": "keyword.control.extensions.proto" },
+        "2": {
+          "patterns": [
+            { "include": "#numbers" },
+            {
+              "match": "\\bto\\b",
+              "name": "keyword.control.to.proto"
+            },
+            {
+              "match": "\\bmax\\b",
+              "name": "keyword.control.max.proto"
+            }
+          ]
+        }
+      }
+    },
+    "map": {
+      "begin": "\\b(map)\\s*(<)\\s*(\\w+)\\s*(,)\\s*([\\w.]+)\\s*(>)\\s+(\\w+)\\s*(=)\\s*(0[xX][0-9a-fA-F]+|\\d+)",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.map.proto" },
+        "2": { "name": "punctuation.definition.typeparameters.begin.proto" },
+        "3": { "name": "storage.type.proto" },
+        "4": { "name": "punctuation.separator.proto" },
+        "5": {
+          "patterns": [
+            { "include": "#types" },
+            { "match": "[\\w.]+", "name": "entity.name.type.proto" }
+          ]
+        },
+        "6": { "name": "punctuation.definition.typeparameters.end.proto" },
+        "7": { "name": "variable.other.field.proto" },
+        "8": { "name": "keyword.operator.assignment.proto" },
+        "9": { "name": "constant.numeric.proto" }
+      },
+      "end": "(;)",
+      "endCaptures": {
+        "1": { "name": "punctuation.terminator.proto" }
+      },
+      "patterns": [{ "include": "#fieldOptions" }]
+    },
+    "group": {
+      "comment": "Proto2 group field (deprecated but valid syntax)",
+      "patterns": [
+        {
+          "comment": "Group with label (optional/required/repeated)",
+          "begin": "\\b(optional|required|repeated)\\s+(group)\\s+([A-Z]\\w*)\\s*(=)\\s*(\\d+)\\s*(\\{)",
+          "end": "\\}",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.modifier.proto" },
+            "2": { "name": "keyword.control.group.proto" },
+            "3": { "name": "entity.name.type.group.proto" },
+            "4": { "name": "keyword.operator.assignment.proto" },
+            "5": { "name": "constant.numeric.proto" },
+            "6": { "name": "punctuation.definition.block.proto" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#option" },
+            { "include": "#field" },
+            { "include": "#group" }
+          ]
+        },
+        {
+          "comment": "Group without label (nested inside another group)",
+          "begin": "\\b(group)\\s+([A-Z]\\w*)\\s*(=)\\s*(\\d+)\\s*(\\{)",
+          "end": "\\}",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.group.proto" },
+            "2": { "name": "entity.name.type.group.proto" },
+            "3": { "name": "keyword.operator.assignment.proto" },
+            "4": { "name": "constant.numeric.proto" },
+            "5": { "name": "punctuation.definition.block.proto" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#option" },
+            { "include": "#field" },
+            { "include": "#group" }
+          ]
+        }
+      ]
+    },
+    "field": {
+      "patterns": [
+        {
+          "comment": "Field with inline CEL validation option",
+          "begin": "\\b(optional|required|repeated)?\\s*([\\w.]+)\\s+(\\w+)\\s*=\\s*(\\d+)\\s*\\[\\s*(\\([\\w.]+\\)(?:\\.[\\w]+)*)\\s*=\\s*\\{",
+          "end": "\\}\\s*\\]\\s*;",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.modifier.proto" },
+            "2": {
+              "patterns": [
+                { "include": "#types" },
+                { "match": "[\\w.]+", "name": "entity.name.type.proto" }
+              ]
+            },
+            "3": { "name": "variable.other.field.proto" },
+            "4": { "name": "constant.numeric.proto" },
+            "5": { "name": "variable.other.option.proto" }
+          },
+          "patterns": [{ "include": "#celOptionBody" }]
+        },
+        {
+          "comment": "Multi-line field with modifier - matches 'modifier type name =' and continues to semicolon",
+          "begin": "\\b(optional|required|repeated)\\s+(\\.?[\\w.]+)\\s+(\\w+)\\s*(=)",
+          "end": "(;)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.modifier.proto" },
+            "2": {
+              "patterns": [
+                { "include": "#types" },
+                { "match": "\\.?[\\w.]+", "name": "entity.name.type.proto" }
+              ]
+            },
+            "3": { "name": "variable.other.field.proto" },
+            "4": { "name": "keyword.operator.assignment.proto" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.terminator.proto" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#fieldOptions" },
+            {
+              "comment": "Field number (can appear anywhere before semicolon)",
+              "match": "\\b(0[xX][0-9a-fA-F]+|\\d+)\\b",
+              "name": "constant.numeric.proto"
+            }
+          ]
+        },
+        {
+          "comment": "Multi-line field without modifier - absolute qualified type (.pkg.Type)",
+          "begin": "(\\.\\w[\\w.]*)\\s+(\\w+)\\s*(=)",
+          "end": "(;)",
+          "beginCaptures": {
+            "1": { "name": "entity.name.type.proto" },
+            "2": { "name": "variable.other.field.proto" },
+            "3": { "name": "keyword.operator.assignment.proto" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.terminator.proto" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#fieldOptions" },
+            {
+              "comment": "Field number (can appear anywhere before semicolon)",
+              "match": "\\b(0[xX][0-9a-fA-F]+|\\d+)\\b",
+              "name": "constant.numeric.proto"
+            }
+          ]
+        },
+        {
+          "comment": "Multi-line field without modifier - supports whitespace/newlines between tokens",
+          "begin": "\\b([\\w.]+)\\s+(\\w+)\\s*(=)",
+          "end": "(;)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                { "include": "#types" },
+                { "match": "[\\w.]+", "name": "entity.name.type.proto" }
+              ]
+            },
+            "2": { "name": "variable.other.field.proto" },
+            "3": { "name": "keyword.operator.assignment.proto" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.terminator.proto" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#fieldOptions" },
+            {
+              "comment": "Field number (can appear anywhere before semicolon)",
+              "match": "\\b(0[xX][0-9a-fA-F]+|\\d+)\\b",
+              "name": "constant.numeric.proto"
+            }
+          ]
+        }
+      ]
+    },
+    "types": {
+      "match": "\\b(double|float|int32|int64|uint32|uint64|sint32|sint64|fixed32|fixed64|sfixed32|sfixed64|bool|string|bytes)\\b",
+      "name": "storage.type.proto"
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.proto",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "comment": "Unicode long escape (8 hex digits)",
+              "name": "constant.character.escape.unicode.proto",
+              "match": "\\\\U[0-9a-fA-F]{8}"
+            },
+            {
+              "comment": "Unicode escape (4 hex digits)",
+              "name": "constant.character.escape.unicode.proto",
+              "match": "\\\\u[0-9a-fA-F]{4}"
+            },
+            {
+              "comment": "Hex escape (1-2 hex digits)",
+              "name": "constant.character.escape.hex.proto",
+              "match": "\\\\[xX][0-9a-fA-F]{1,2}"
+            },
+            {
+              "comment": "Octal escape (1-3 octal digits)",
+              "name": "constant.character.escape.octal.proto",
+              "match": "\\\\[0-7]{1,3}"
+            },
+            {
+              "comment": "Character escapes",
+              "name": "constant.character.escape.proto",
+              "match": "\\\\[abfnrtv\\\\'\"]"
+            },
+            {
+              "comment": "Invalid escape sequence",
+              "name": "invalid.illegal.escape.proto",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.proto",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "comment": "Unicode long escape (8 hex digits)",
+              "name": "constant.character.escape.unicode.proto",
+              "match": "\\\\U[0-9a-fA-F]{8}"
+            },
+            {
+              "comment": "Unicode escape (4 hex digits)",
+              "name": "constant.character.escape.unicode.proto",
+              "match": "\\\\u[0-9a-fA-F]{4}"
+            },
+            {
+              "comment": "Hex escape (1-2 hex digits)",
+              "name": "constant.character.escape.hex.proto",
+              "match": "\\\\[xX][0-9a-fA-F]{1,2}"
+            },
+            {
+              "comment": "Octal escape (1-3 octal digits)",
+              "name": "constant.character.escape.octal.proto",
+              "match": "\\\\[0-7]{1,3}"
+            },
+            {
+              "comment": "Character escapes",
+              "name": "constant.character.escape.proto",
+              "match": "\\\\[abfnrtv\\\\'\"]"
+            },
+            {
+              "comment": "Invalid escape sequence",
+              "name": "invalid.illegal.escape.proto",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.proto",
+          "match": "\\b[+-]?0[xX][0-9a-fA-F]+\\b"
+        },
+        {
+          "name": "constant.numeric.octal.proto",
+          "match": "\\b0[0-7]+\\b"
+        },
+        {
+          "comment": "Float with decimal point and optional exponent",
+          "name": "constant.numeric.float.proto",
+          "match": "[+-]?\\d+\\.\\d+([eE][+-]?\\d+)?\\b"
+        },
+        {
+          "comment": "Float with just decimal point (.5)",
+          "name": "constant.numeric.float.proto",
+          "match": "[+-]?\\.\\d+([eE][+-]?\\d+)?\\b"
+        },
+        {
+          "comment": "Integer with exponent (1e10)",
+          "name": "constant.numeric.float.proto",
+          "match": "\\b[+-]?\\d+[eE][+-]?\\d+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.proto",
+          "match": "[+-]?\\d+\\b"
+        }
+      ]
+    },
+    "constants": {
+      "match": "\\b(true|false|inf|nan|max)\\b",
+      "name": "constant.language.proto"
+    }
+  }
+}
