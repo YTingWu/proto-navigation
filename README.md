@@ -1,87 +1,161 @@
-## Features
+# Proto Navigation
 
-![Example](images/demo.gif)
+> 🚀 Navigate seamlessly from `.proto` files to C# and Python service implementations
 
-* Press **F12** (Go to Definition) in a `.proto` file to navigate to message definitions or service implementations
-* Press **Cmd+F12** / **Ctrl+F12** (Go to Implementation) to jump directly to C# or Python service method implementations
-* Automatically detect and search for service files in the configured implementation directory (default: `Services/`)
-* Supports manual service file configuration via `service_file` directive
-* Detailed logging output in the "Proto Navigation" output channel
+![Demo](images/demo.gif)
 
-## Requirements
+## ✨ Features
 
-* **[Protobuf/gRPC Support – protobuf-vsc](https://marketplace.visualstudio.com/items?itemName=DrBlury.protobuf-vsc)** must be installed. It provides the language server, syntax highlighting, and language features for `.proto` files. This extension is declared as an `extensionDependency` and will be installed automatically.
+### 🎯 Smart Navigation
+- **Go to Definition** (`F12`) — Navigate to message definitions or service implementations
+- **Go to Implementation** (`Cmd/Ctrl+F12`) — Jump directly to C# or Python service methods
+- **Peek Definition** (`Alt/Option+F12`) — Preview implementations without leaving your file
 
-> **Migrating from vscode-proto3?** Version 0.1.0 replaced `zxh404.vscode-proto3` with `DrBlury.protobuf-vsc`. You may uninstall vscode-proto3 after updating; both extensions can coexist, but only protobuf-vsc is required.
+### 🔍 Intelligent Search
+- **Automatic Discovery** — Finds `*Service.cs` and `*Service.py` files in your project
+- **Multi-Language Support** — Works with both C# and Python implementations
+- **Configurable Paths** — Customize where to search for implementation files
+- **Manual Override** — Use `service_file` directives when needed
 
-> **Note:** If your `.proto` file imports external `.proto` files, such as `google/protobuf/empty.proto`, the navigation process might be slower.
+### 📊 Developer-Friendly
+- **Detailed Logging** — Track navigation and search progress in the Output panel
+- **Smart Caching** — Fast subsequent navigations with intelligent caching
+- **Zero Configuration** — Works out of the box with standard project structures
 
-## Usage
+---
 
-### Navigation Options
+## 🚀 Quick Start
 
-| Action | Shortcut | Description |
-|--------|----------|-------------|
-| Go to Definition | **F12** | Navigate to message definitions or service implementations |
-| Go to Implementation | **Cmd+F12** (macOS)<br>**Ctrl+F12** (Windows/Linux) | Jump directly to C# or Python service method implementation |
-| Peek Definition | **Option+F12** (macOS)<br>**Alt+F12** (Windows/Linux) | Preview definition in a peek window |
+### 1️⃣ Installation
 
-### Viewing Logs
+This extension requires [Protobuf/gRPC Support](https://marketplace.visualstudio.com/items?itemName=DrBlury.protobuf-vsc), which will be installed automatically.
 
-1. Open the Output panel: **Cmd+Shift+U** (macOS) or **Ctrl+Shift+U** (Windows/Linux)
-2. Select **"Proto Navigation"** from the dropdown menu
-3. View detailed logs about file searches and navigation results
+> 💡 **Migrating from vscode-proto3?** You can safely uninstall `zxh404.vscode-proto3` after updating to v0.1.0+
 
-## Architecture
+### 2️⃣ Basic Usage
 
-The extension is organised into decoupled modules:
+**Option A: Zero Configuration (Recommended)**
 
-| Module | Responsibility |
-|---|---|
-| `src/extension.ts` | Activation entry point; wires components together; registers Definition and Implementation providers |
-| `src/providers/definitionProvider.ts` | Implements both `DefinitionProvider` and `ImplementationProvider` – routes navigation to message or service |
-| `src/services/protoParser.ts` | Pure functions for parsing proto text (`service_file` directive, message type detection) |
-| `src/services/serviceFileResolver.ts` | Resolves C# and Python service files via directive or workspace search (prioritizes configured implementation directory) |
-| `src/cache/cacheManager.ts` | Caches opened documents and resolved service file paths |
+If your project follows this structure, it just works:
+```
+project/
+├── Protos/
+│   └── user.proto
+└── Services/
+    ├── UserService.cs
+    └── PaymentService.py
+```
 
-## Setting the Service File
+**Option B: Custom Configuration**
 
-There are three ways to specify the service file:
+Press `F1` and run:
+```
+ProtoNavigation: Set Implementation Root Directory
+```
 
-1. **Automatic Search (Recommended)**: The extension automatically searches for `*Service.cs` and `*Service.py` files in the configured implementation directory (default: `Services/`, sibling to `Protos/`). No configuration needed!
+Choose your implementation folder (e.g., `src/services/`) and save to User or Workspace settings.
 
-2. **Manual Directive**: Add a comment in your `.proto` file:
+**Option C: Per-File Override**
+
+Add a directive in your `.proto` file:
+```proto
+// service_file = "Services/UserService";
+```
+
+### 3️⃣ Start Navigating!
+
+| Keyboard Shortcut | Action | What It Does |
+|---|---|---|
+| `F12` | Go to Definition | Jump to message or service implementation |
+| `Cmd/Ctrl+F12` | Go to Implementation | Go directly to the method implementation |
+| `Alt/Option+F12` | Peek Definition | Quick preview in a popup window |
+
+---
+
+## ⚙️ Configuration
+
+### Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `protoNavigation.implementationRootDirectory` | `Services/` | Root directory for implementation files (relative to proto parent directory) |
+
+**Example values:**
+- `Services/` → searches `../Services/` relative to proto file
+- `src/services/` → searches `../src/services/` relative to proto file
+- `backend/grpc/` → searches `../backend/grpc/` relative to proto file
+
+### Commands
+
+Access via `F1` or `Cmd/Ctrl+Shift+P`:
+
+| Command | Description |
+|---------|-------------|
+| **ProtoNavigation: Set Proto Service File** | Insert a `service_file` directive template in current file |
+| **ProtoNavigation: Set Implementation Root Directory** | Configure implementation search path (User or Workspace) |
+
+---
+
+## 🔧 How It Works
+
+### Search Priority
+
+The extension resolves implementations in this order:
+
+1. **📌 Proto file directive** (highest priority)
    ```proto
    // service_file = "Services/BillService";
    ```
 
-3. **Command**: Use `extension.setProtoServiceFile` command (F1 → "Set Proto Service File") to insert a template directive.
+2. **⚙️ User/Workspace configuration**
+   - Value from `protoNavigation.implementationRootDirectory`
 
-### Search Priority
+3. **📁 Default fallback**
+   - Searches `Services/` directory
 
-When looking for service implementations:
-1. If `service_file` directive exists in proto file → use that path (highest priority)
-2. Otherwise, search in configured implementation directory for `*Service.{cs,py}` files
-3. Use regex patterns to match method definitions:
-   - C#: `\b{MethodName}\s*\(`
-   - Python: `\bdef\s+{MethodName}\s*\(`
+### Language Support
 
-## Extension Settings
+| Language | File Pattern | Method Pattern |
+|----------|--------------|----------------|
+| **C#** | `*Service.cs` | `\b{MethodName}\s*\(` |
+| **Python** | `*Service.py` | `\bdef\s+{MethodName}\s*\(` |
 
-This extension contributes the following settings:
+---
 
-* `protoNavigation.implementationRootDirectory`: Specifies the root directory to search for service implementations (default: `Services/`). This directory should be relative to the proto file's parent directory. For example:
-  - `Services/` - searches in `../Services/` relative to proto file
-  - `src/services/` - searches in `../src/services/` relative to proto file
+## 🐛 Troubleshooting
 
-### Commands
+### Not finding implementations?
 
-You can access these commands by pressing **F1** or **Cmd+Shift+P** (macOS) / **Ctrl+Shift+P** (Windows/Linux):
+1. **Check logs**: Open Output panel (`Cmd/Ctrl+Shift+U`) → Select **"Proto Navigation"**
+2. **Verify structure**: Ensure implementation files follow `*Service.{cs,py}` naming
+3. **Configure path**: Use `ProtoNavigation: Set Implementation Root Directory` if using non-standard structure
 
-* **ProtoNavigation: Set Proto Service File** - Inserts a `service_file` directive template at the second line of the current proto file:
+### Slow navigation?
 
-```proto
-// service_file = "xxx/xxxService";
-```
+If your `.proto` imports external files (e.g., `google/protobuf/empty.proto`), navigation may be slower due to dependency resolution.
 
-* **ProtoNavigation: Set Implementation Root Directory** - Opens a dialog to set the implementation root directory. You can choose to save it to User Settings (global) or Workspace Settings (project-specific). This setting determines where the extension searches for service implementation files.
+---
+
+## 🏗️ Architecture
+
+For developers interested in extending or understanding the codebase:
+
+| Module | Purpose |
+|--------|---------|
+| `extension.ts` | Extension entry point and provider registration |
+| `providers/definitionProvider.ts` | Definition and Implementation provider logic |
+| `services/protoParser.ts` | Proto directive parsing and message type detection |
+| `services/serviceFileResolver.ts` | Implementation file search and resolution |
+| `cache/cacheManager.ts` | Document and path caching |
+
+---
+
+## 📝 License
+
+See [LICENSE.md](LICENSE.md)
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/YTingWu/proto-navigation)
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation)
+- [Report Issues](https://github.com/YTingWu/proto-navigation/issues)

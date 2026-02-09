@@ -2,15 +2,27 @@
   "name": "proto-navigation",
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
-  "description": "Implement navigation functionality for proto files.",
-  "version": "0.1.1",
+  "description": "Navigate seamlessly from .proto files to C# and Python service implementations with F12 and Cmd+F12",
+  "version": "0.1.2",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0",
     "node": ">=20.18.1"
   },
   "categories": [
+    "Programming Languages",
     "Other"
+  ],
+  "keywords": [
+    "protobuf",
+    "proto",
+    "grpc",
+    "navigation",
+    "go to definition",
+    "go to implementation",
+    "csharp",
+    "python",
+    "protocol buffers"
   ],
   "activationEvents": [
     "onLanguage:proto",

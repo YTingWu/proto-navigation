@@ -4,6 +4,13 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.2] – 2026-02-09
+
+### Changed
+- **Documentation**: Refactored README.md for better UX with emoji icons, clear section structure, and Quick Start guide
+- **Package Metadata**: Improved extension description and added relevant keywords for better marketplace discoverability
+- **Categories**: Added "Programming Languages" category for better VS Code marketplace categorization
+
 ## [0.1.1] – 2026-02-09
 
 ### Added
