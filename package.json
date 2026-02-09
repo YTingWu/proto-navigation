@@ -3,7 +3,7 @@
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
   "description": "Implement navigation functionality for proto files.",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0"
@@ -12,7 +12,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:proto3"
+    "onLanguage:proto",
+    "onLanguage:proto3",
+    "onLanguage:protobuf",
+    "workspaceContains:**/*.proto"
   ],
   "main": "./dist/extension.js",
   "repository": {
@@ -28,7 +31,7 @@
     ]
   },
   "extensionDependencies": [
-    "zxh404.vscode-proto3"
+    "DrBlury.protobuf-vsc"
   ],
   "scripts": {
     "vscode:prepublish": "npm run package",

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "AuthDebitForBillService";
+package authdebit;
+
+service AuthDebitForBillGrpcService {
+    rpc Debit(DebitGrpcRequest) returns(DebitGrpcResponse);
+}
+
+message DebitGrpcRequest {
+    string auth_debit_binding_no = 1;
+    string pb_trade_no = 2;
+    string store_code = 3;
+    int64 member_id = 4;
+}
+
+message DebitGrpcResponse {
+    string code = 1;
+    string prefix_code = 2;
+    string message = 3;
+}
