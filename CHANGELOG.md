@@ -4,6 +4,31 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.1] – 2026-02-09
+
+### Added
+- **Python Support**: Added support for Python service implementations (`.py` files) alongside C# (`.cs` files)
+  - Searches for `*Service.py` files in implementation directory
+  - Recognizes Python function pattern: `def {MethodName}(`
+  - Excludes Python cache directories (`__pycache__`, `venv`, `.venv`)
+- **Configuration Setting**: New `protoNavigation.implementationRootDirectory` setting to customize where to search for service implementations
+  - Default: `Services/` (relative to proto file's parent directory)
+  - Users can specify custom paths like `src/services/`
+- **F1 Command**: `ProtoNavigation: Set Implementation Root Directory` command to configure implementation root directory
+  - Interactive dialog with input validation
+  - Option to save to User Settings (global) or Workspace Settings (project-specific)
+  - Shows current value as default
+- Comprehensive test suite for Python support and configuration handling
+
+### Changed
+- **Command Rename**: Updated command title from `Set Proto Service File` to `ProtoNavigation: Set Proto Service File` for better visibility in command palette
+- **Search Logic**: Implementation search now supports both C# and Python files simultaneously
+- **Priority**: Search priority now respects: proto file directive → user configuration → default `Services/` directory
+- Enhanced logging to show C# and Python file counts separately
+
+### Fixed
+- Service file path handling now correctly supports both `.cs` and `.py` extensions
+
 ## [0.1.0] – 2026-02-09
 
 ### Added

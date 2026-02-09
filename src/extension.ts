@@ -30,12 +30,51 @@ export function activate(context: vscode.ExtensionContext): void {
 		vscode.commands.registerCommand('extension.setProtoServiceFile', async () => {
 			const editor = vscode.window.activeTextEditor;
 			if (!editor) {
+				vscode.window.showWarningMessage('No active editor found');
 				return;
 			}
 			const secondLine = new vscode.Position(1, 0);
 			await editor.edit(editBuilder => {
 				editBuilder.insert(secondLine, '// service_file = "xxx/xxxService";\n');
 			});
+		}),
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('extension.setImplementationRootDirectory', async () => {
+			const config = vscode.workspace.getConfiguration('protoNavigation');
+			const currentValue = config.get<string>('implementationRootDirectory', 'Services/');
+			
+			const newValue = await vscode.window.showInputBox({
+				prompt: 'Enter the implementation root directory path (relative to proto file\'s parent directory)',
+				placeHolder: 'Services/ or src/services/',
+				value: currentValue,
+				validateInput: (value: string) => {
+					if (!value || value.trim() === '') {
+						return 'Path cannot be empty';
+					}
+					return null;
+				}
+			});
+
+			if (newValue !== undefined) {
+				const target = await vscode.window.showQuickPick(
+					[
+						{ label: 'User Settings', value: vscode.ConfigurationTarget.Global },
+						{ label: 'Workspace Settings', value: vscode.ConfigurationTarget.Workspace }
+					],
+					{
+						placeHolder: 'Select where to save this setting'
+					}
+				);
+
+				if (target) {
+					await config.update('implementationRootDirectory', newValue, target.value);
+					vscode.window.showInformationMessage(
+						`Implementation root directory set to: ${newValue} (${target.label})`
+					);
+				}
+			}
 		}),
 	);
 

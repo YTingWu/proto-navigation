@@ -3,7 +3,7 @@
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
   "description": "Implement navigation functionality for proto files.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0",
@@ -38,9 +38,23 @@
     "commands": [
       {
         "command": "extension.setProtoServiceFile",
-        "title": "Set Proto Service File"
+        "title": "ProtoNavigation: Set Proto Service File"
+      },
+      {
+        "command": "extension.setImplementationRootDirectory",
+        "title": "ProtoNavigation: Set Implementation Root Directory"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Proto Navigation",
+      "properties": {
+        "protoNavigation.implementationRootDirectory": {
+          "type": "string",
+          "default": "Services/",
+          "description": "Root directory to search for service implementations (relative to proto file's parent directory)"
+        }
+      }
+    }
   },
   "extensionDependencies": [
     "DrBlury.protobuf-vsc"

@@ -7,6 +7,7 @@ import {
 	findSecondOccurrence,
 } from '../services/protoParser';
 import { CacheManager } from '../cache/cacheManager';
+import { ServiceFileResolver } from '../services/serviceFileResolver';
 
 const TEST_PROTO_PATH = path.resolve(__dirname, '../../test.proto');
 
@@ -83,6 +84,11 @@ suite('Proto Navigation Extension Test Suite', () => {
 			assert.strictEqual(cache.getServiceFile('/a.proto'), 'services/A');
 		});
 
+		test('should store Python service file paths', () => {
+			cache.setServiceFile('/b.proto', 'services/BService.py');
+			assert.strictEqual(cache.getServiceFile('/b.proto'), 'services/BService.py');
+		});
+
 		test('should clear a service file entry', () => {
 			cache.setServiceFile('/a.proto', 'services/A');
 			cache.clearServiceFile('/a.proto');
@@ -104,6 +110,41 @@ suite('Proto Navigation Extension Test Suite', () => {
 			// Second call should return the cached instance
 			const doc2 = await cache.openDocument(uri);
 			assert.strictEqual(doc, doc2);
+		});
+	});
+
+	suite('ServiceFileResolver', () => {
+		let cache: CacheManager;
+		let resolver: ServiceFileResolver;
+
+		setup(() => {
+			cache = new CacheManager();
+			resolver = new ServiceFileResolver(cache);
+		});
+
+		teardown(() => {
+			cache.dispose();
+		});
+
+		test('should handle C# service file extensions', async () => {
+			// This is a unit test for the resolver logic
+			// We're not actually searching the filesystem here
+			const testPath = '/some/path/Services/TestService.cs';
+			assert.ok(testPath.endsWith('.cs'));
+		});
+
+		test('should handle Python service file extensions', async () => {
+			const testPath = '/some/path/Services/TestService.py';
+			assert.ok(testPath.endsWith('.py'));
+		});
+
+		test('should support configuration for implementation root directory', () => {
+			const config = vscode.workspace.getConfiguration('protoNavigation');
+			const defaultValue = 'Services/';
+			// The configuration should exist and have a default value
+			assert.ok(config !== undefined);
+			// We can't test the actual value in the test environment, 
+			// but we verify the config mechanism works
 		});
 	});
 

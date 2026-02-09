@@ -59,7 +59,7 @@ export class ServiceFileResolver {
 		this.cache.setServiceFile(document.uri.fsPath, serviceFileName);
 
 		const protoDir = path.dirname(document.uri.fsPath);
-		const serviceFilePath = serviceFileName.endsWith('.cs')
+		const serviceFilePath = serviceFileName.endsWith('.cs') || serviceFileName.endsWith('.py')
 			? serviceFileName
 			: path.join(protoDir, `../${serviceFileName}.cs`);
 
@@ -94,28 +94,44 @@ export class ServiceFileResolver {
 		const parentDir = path.dirname(protoDir);
 		this.log(`Parent directory: ${parentDir}`);
 		
-		// Services directory should be at the same level as Protos
-		const servicesDir = path.join(parentDir, 'Services');
-		this.log(`Services directory: ${servicesDir}`);
+		// Get configured implementation root directory, default to 'Services/'
+		const config = vscode.workspace.getConfiguration('protoNavigation');
+		const implRootDir = config.get<string>('implementationRootDirectory', 'Services/');
+		// Remove trailing slash if present
+		const cleanImplRoot = implRootDir.replace(/\/$/, '');
 		
-		// First, try searching in the Services directory
+		// Implementation directory should be at the same level as Protos
+		const implementationDir = path.join(parentDir, cleanImplRoot);
+		this.log(`Implementation directory (from config): ${implementationDir}`);
+		
+		// Search for both C# and Python service files
 		let files: vscode.Uri[] = [];
 		
 		try {
-			this.log(`Searching in Services directory: ${servicesDir}/**/*Service.cs`);
-			files = await vscode.workspace.findFiles(
-				new vscode.RelativePattern(servicesDir, '**/*Service.cs'),
+			this.log(`Searching in implementation directory: ${implementationDir}/**/*Service.{cs,py}`);
+			const csFiles = await vscode.workspace.findFiles(
+				new vscode.RelativePattern(implementationDir, '**/*Service.cs'),
 				'{**/bin/**,**/obj/**}',
 			);
-			this.log(`Found ${files.length} files in Services directory`);
+			const pyFiles = await vscode.workspace.findFiles(
+				new vscode.RelativePattern(implementationDir, '**/*Service.py'),
+				'{**/__pycache__/**,**/venv/**,**/.venv/**}',
+			);
+			files = [...csFiles, ...pyFiles];
+			this.log(`Found ${files.length} files in implementation directory (${csFiles.length} C#, ${pyFiles.length} Python)`);
 		} catch (error) {
-			this.log(`Error searching Services directory, trying parent: ${error}`);
-			// If Services directory doesn't exist, try parent directory
-			files = await vscode.workspace.findFiles(
+			this.log(`Error searching implementation directory, trying parent: ${error}`);
+			// If implementation directory doesn't exist, try parent directory
+			const csFiles = await vscode.workspace.findFiles(
 				new vscode.RelativePattern(parentDir, '**/*Service.cs'),
 				'{**/bin/**,**/obj/**,**/Protos/**}',
 			);
-			this.log(`Found ${files.length} files in parent directory`);
+			const pyFiles = await vscode.workspace.findFiles(
+				new vscode.RelativePattern(parentDir, '**/*Service.py'),
+				'{**/__pycache__/**,**/venv/**,**/.venv/**,**/Protos/**}',
+			);
+			files = [...csFiles, ...pyFiles];
+			this.log(`Found ${files.length} files in parent directory (${csFiles.length} C#, ${pyFiles.length} Python)`);
 		}
 
 		if (files.length === 0) {
@@ -128,19 +144,25 @@ export class ServiceFileResolver {
 			this.log(`  ${index + 1}. ${file.fsPath}`);
 		});
 
-		const functionPattern = new RegExp(`\\b${functionName}\\s*\\(`);
-		this.log(`\nSearching for pattern: \\b${functionName}\\s*\\(`);
+		// Search for C# pattern: MethodName( or Python pattern: def MethodName(
+		const csharpPattern = new RegExp(`\\b${functionName}\\s*\\(`);
+		const pythonPattern = new RegExp(`\\bdef\\s+${functionName}\\s*\\(`);
+		this.log(`\nSearching for patterns:`);
+		this.log(`  C#: \\b${functionName}\\s*\\(`);
+		this.log(`  Python: \\bdef\\s+${functionName}\\s*\\(`);
 
 		for (const file of files) {
 			try {
 				this.log(`\nChecking file: ${path.basename(file.fsPath)}`);
 				const content = fs.readFileSync(file.fsPath, 'utf-8');
+				const isPython = file.fsPath.endsWith('.py');
+				const pattern = isPython ? pythonPattern : csharpPattern;
 				
 				// Check if the service file contains the function
-				if (functionPattern.test(content)) {
+				if (pattern.test(content)) {
 					this.log(`  ✓ Found match for ${functionName} in ${path.basename(file.fsPath)}`);
 					// Make sure this function is not just defined in the proto file itself
-					// (we want the C# implementation, not the proto definition)
+					// (we want the implementation, not the proto definition)
 					if (!file.fsPath.includes('.proto')) {
 						this.log(`  ✓ File is not a proto file, returning: ${file.fsPath}`);
 						return file;

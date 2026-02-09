@@ -99,7 +99,7 @@ export class ProtoDefinitionProvider implements vscode.DefinitionProvider, vscod
 		this.log(`Resolved service file: ${serviceFileName}`, logPrefix);
 		
 		const protoDir = path.dirname(document.uri.fsPath);
-		const serviceFilePath = serviceFileName.endsWith('.cs')
+		const serviceFilePath = serviceFileName.endsWith('.cs') || serviceFileName.endsWith('.py')
 			? serviceFileName
 			: path.join(protoDir, `../${serviceFileName}.cs`);
 
