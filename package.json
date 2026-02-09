@@ -23,6 +23,17 @@
     "url": "https://github.com/YTingWu/proto-navigation"
   },
   "contributes": {
+    "languages": [
+      {
+        "id": "proto",
+        "extensions": [
+          ".proto"
+        ],
+        "aliases": [
+          "Protocol Buffers"
+        ]
+      }
+    ],
     "commands": [
       {
         "command": "extension.setProtoServiceFile",
