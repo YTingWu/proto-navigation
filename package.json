@@ -6,7 +6,8 @@
   "version": "0.1.0",
   "icon": "images/icon.png",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.85.0",
+    "node": ">=20.18.1"
   },
   "categories": [
     "Other"
@@ -57,7 +58,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
-    "@types/node": "18.x",
+    "@types/node": "20.x",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
