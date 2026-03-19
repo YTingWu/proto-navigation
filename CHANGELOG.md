@@ -4,6 +4,11 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.1] – 2026-03-19
+
+### Fixed
+- Updated development and test dependencies to remediate upstream security advisories affecting `@typescript-eslint/*`, `minimatch`, `ajv`, `flatted`, and the VS Code test toolchain
+
 ## [0.2.0] – 2026-02-09
 
 ### Added

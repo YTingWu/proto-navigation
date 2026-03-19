@@ -6,6 +6,10 @@
 
 ## ✨ Features
 
+## 📦 Release Notes
+
+- **v0.2.1** — Refreshed development and test dependencies to address upstream security advisories. No user-facing configuration changes.
+
 ### 🎯 Smart Navigation
 - **Go to Definition** (`F12`) — Navigate to message definitions or service implementations
 - **Go to Implementation** (`Cmd/Ctrl+F12`) — Jump to service methods or message definitions

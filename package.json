@@ -3,7 +3,7 @@
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
   "description": "Navigate seamlessly from .proto files to C# and Python service implementations with F12 and Cmd+F12",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0",
@@ -91,11 +91,11 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "20.x",
     "@types/vscode": "^1.85.0",
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
-    "@vscode/test-cli": "^0.0.4",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "webpack": "^5.105.0",
@@ -103,5 +103,9 @@
   },
   "dependencies": {
     "protobufjs": "^7.2.6"
+  },
+  "overrides": {
+    "diff": "^8.0.3",
+    "serialize-javascript": "^7.0.4"
   }
 }
