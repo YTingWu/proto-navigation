@@ -4,6 +4,14 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.2] – 2026-04-09
+
+### Security
+- Updated dependency overrides to remediate moderate severity vulnerabilities:
+  - `serialize-javascript` upgraded to `^7.0.5` (CVE-2026-34043)
+  - `picomatch` upgraded to `^2.3.2` (CVE-2026-33672)
+  - `brace-expansion` upgraded to `^2.0.2` (GHSA-f886-m6hf-6m8v: zero-step sequence DoS)
+
 ## [0.2.1] – 2026-03-19
 
 ### Fixed

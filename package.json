@@ -3,7 +3,7 @@
   "publisher": "BruceWu",
   "displayName": "Proto Navigation",
   "description": "Navigate seamlessly from .proto files to C# and Python service implementations with F12 and Cmd+F12",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0",
@@ -106,6 +106,8 @@
   },
   "overrides": {
     "diff": "^8.0.3",
-    "serialize-javascript": "^7.0.4"
+    "serialize-javascript": "^7.0.5",
+    "picomatch": "^2.3.2",
+    "brace-expansion": "^2.0.2"
   }
 }
