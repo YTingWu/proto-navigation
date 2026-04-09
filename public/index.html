@@ -61,6 +61,7 @@
         <a href="#features" class="hover:text-text-primary transition">Features</a>
         <a href="#demo" class="hover:text-text-primary transition">Demo</a>
         <a href="#quickstart" class="hover:text-text-primary transition">Quick Start</a>
+        <a href="#releases" class="hover:text-text-primary transition">Releases</a>
         <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
@@ -79,6 +80,7 @@
       <a href="#features" class="block py-2 text-text-secondary hover:text-text-primary">Features</a>
       <a href="#demo" class="block py-2 text-text-secondary hover:text-text-primary">Demo</a>
       <a href="#quickstart" class="block py-2 text-text-secondary hover:text-text-primary">Quick Start</a>
+      <a href="#releases" class="block py-2 text-text-secondary hover:text-text-primary">Releases</a>
       <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener"
          class="inline-block mt-2 bg-brand text-primary font-medium px-4 py-1.5 rounded-lg text-xs">Install</a>
     </div>
@@ -223,12 +225,144 @@
       </div>
     </section>
 
+    <!-- Release History -->
+    <section id="releases" class="max-w-3xl mx-auto px-4 pb-20">
+      <h2 class="text-xl font-bold text-center mb-6">Release History</h2>
+      <div class="space-y-2">
+
+        <!-- v0.2.3 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="true">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.3</span>
+              <span class="text-sm font-medium text-text-primary">Added homepage link</span>
+              <span class="text-xs text-text-secondary">2026-04-09</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 rotate-180 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-brand-green mb-1">Added</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Added <code class="text-brand">homepage</code> field in <code class="text-brand">package.json</code> pointing to the extension's landing page</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.2 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.2</span>
+              <span class="text-sm font-medium text-text-primary">Security dependency patches</span>
+              <span class="text-xs text-text-secondary">2026-04-09</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Upgraded <code class="text-brand">serialize-javascript</code> to <code class="text-brand">^7.0.5</code></li>
+              <li>Upgraded <code class="text-brand">picomatch</code> to <code class="text-brand">^2.3.2</code></li>
+              <li>Upgraded <code class="text-brand">brace-expansion</code> to <code class="text-brand">^2.0.2</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.1 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.1</span>
+              <span class="text-sm font-medium text-text-primary">Dependency security refresh</span>
+              <span class="text-xs text-text-secondary">2026-03-19</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-purple-400 mb-1">Fixed</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Updated dev and test dependencies to address upstream security advisories affecting <code class="text-brand">@typescript-eslint/*</code>, <code class="text-brand">minimatch</code>, <code class="text-brand">ajv</code>, and the VS Code test toolchain</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.0 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.0</span>
+              <span class="text-sm font-medium text-text-primary">Built-in syntax highlighting &amp; enhanced navigation</span>
+              <span class="text-xs text-text-secondary">2026-02-09</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary space-y-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-brand-green mb-1">Added</p>
+              <ul class="list-disc list-inside space-y-1">
+                <li>Native TextMate grammar for <code class="text-brand">.proto</code> files — no external extension required</li>
+                <li><kbd>F12</kbd> and <kbd>Cmd/Ctrl+F12</kbd> now navigate to message definitions for Request/Response types</li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wider text-brand mb-1">Changed</p>
+              <ul class="list-disc list-inside space-y-1">
+                <li>Removed dependency on <code class="text-brand">DrBlury.protobuf-vsc</code> — syntax highlighting is now self-contained</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- v0.1.1 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.1.1</span>
+              <span class="text-sm font-medium text-text-primary">Python support &amp; configurable paths</span>
+              <span class="text-xs text-text-secondary">2026-02-09</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-brand-green mb-1">Added</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Python service implementation support (<code class="text-brand">*Service.py</code>)</li>
+              <li><code class="text-brand">protoNavigation.implementationRootDirectory</code> setting for custom search paths</li>
+              <li><code class="text-brand">ProtoNavigation: Set Implementation Root Directory</code> command</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.1.0 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.1.0</span>
+              <span class="text-sm font-medium text-text-primary">Initial release</span>
+              <span class="text-xs text-text-secondary">2026-02-09</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-brand-green mb-1">Added</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Go to Implementation (<kbd>Cmd/Ctrl+F12</kbd>) jumping to C# service methods</li>
+              <li>Auto-activation on <code class="text-brand">.proto</code> files</li>
+              <li>Smart search in <code class="text-brand">Services/</code> directory with caching</li>
+              <li>Detailed logging in Output panel</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
   <footer class="border-t border-accent">
     <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary">
-      <div>Proto Navigation v0.2.2 &middot; MIT License</div>
+      <div>Proto Navigation v0.2.3 &middot; MIT License</div>
       <div class="flex gap-6">
         <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">GitHub</a>
         <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">Marketplace</a>
@@ -243,6 +377,18 @@
     const menu = document.getElementById('mobile-menu');
     toggle.addEventListener('click', () => menu.classList.toggle('hidden'));
     menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.add('hidden')));
+
+    // Changelog accordion
+    document.querySelectorAll('.cl-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const body = btn.nextElementSibling;
+        const chevron = btn.querySelector('.cl-chevron');
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isOpen));
+        body.classList.toggle('hidden', isOpen);
+        chevron.classList.toggle('rotate-180', !isOpen);
+      });
+    });
   </script>
 
 </body>

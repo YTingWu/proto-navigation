@@ -4,6 +4,11 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.3] – 2026-04-09
+
+### Added
+- Added `homepage` field in `package.json` pointing to the extension's landing page
+
 ## [0.2.2] – 2026-04-09
 
 ### Security
