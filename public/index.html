@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proto Navigation — Navigate .proto to C# and Python</title>
+  <meta name="description" content="VS Code extension to navigate from .proto files to C# and Python service implementations with F12.">
+  <meta name="theme-color" content="#0d1117">
+  <meta property="og:title" content="Proto Navigation — VS Code Extension">
+  <meta property="og:description" content="Navigate from Protocol Buffer definitions to C# and Python service implementations.">
+  <meta property="og:image" content="images/icon.png">
+  <link rel="icon" type="image/png" href="images/icon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0d1117',
+            card: '#161b22',
+            accent: '#30363d',
+            brand: '#58a6ff',
+            'brand-green': '#3fb950',
+            'text-primary': '#e6edf3',
+            'text-secondary': '#8b949e',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { background: #0d1117; color: #e6edf3; }
+    .glow { box-shadow: 0 0 40px rgba(88, 166, 255, 0.15); }
+    kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      box-shadow: inset 0 -1px 0 #30363d;
+      color: #e6edf3;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 w-full bg-primary/80 backdrop-blur-md border-b border-accent z-50">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 text-text-primary font-semibold text-sm">
+        <img src="images/icon.png" alt="Proto Navigation icon" class="w-6 h-6 rounded">
+        Proto Navigation
+      </a>
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-6 text-sm text-text-secondary">
+        <a href="#features" class="hover:text-text-primary transition">Features</a>
+        <a href="#demo" class="hover:text-text-primary transition">Demo</a>
+        <a href="#quickstart" class="hover:text-text-primary transition">Quick Start</a>
+        <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener"
+           class="bg-brand text-primary font-medium px-4 py-1.5 rounded-lg text-xs hover:bg-brand/90 transition">
+          Install
+        </a>
+      </div>
+      <!-- Mobile toggle -->
+      <button id="mobile-toggle" class="md:hidden text-text-secondary p-1" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-accent bg-primary/95 backdrop-blur-md px-4 pb-4 text-sm">
+      <a href="#features" class="block py-2 text-text-secondary hover:text-text-primary">Features</a>
+      <a href="#demo" class="block py-2 text-text-secondary hover:text-text-primary">Demo</a>
+      <a href="#quickstart" class="block py-2 text-text-secondary hover:text-text-primary">Quick Start</a>
+      <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener"
+         class="inline-block mt-2 bg-brand text-primary font-medium px-4 py-1.5 rounded-lg text-xs">Install</a>
+    </div>
+  </nav>
+
+  <main class="pt-14">
+
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-brand/5 to-transparent pointer-events-none"></div>
+      <div class="max-w-4xl mx-auto px-4 py-24 md:py-32 text-center relative">
+        <img src="images/icon.png" alt="Proto Navigation" class="w-16 h-16 mx-auto mb-6 rounded-2xl glow">
+        <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-4">
+          Navigate from <span class="text-brand">.proto</span> to implementation
+        </h1>
+        <p class="text-text-secondary text-lg md:text-xl max-w-2xl mx-auto mb-8">
+          Jump from Protocol Buffer definitions straight to your C# and Python service code. Press <kbd>F12</kbd> and go.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener"
+             class="bg-brand text-primary font-semibold px-6 py-3 rounded-lg hover:bg-brand/90 transition text-sm">
+            Install Extension
+          </a>
+          <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener"
+             class="border border-accent text-text-primary font-semibold px-6 py-3 rounded-lg hover:border-text-secondary transition text-sm">
+            View on GitHub
+          </a>
+        </div>
+        <p class="text-text-secondary text-xs mt-6">Works with VS Code 1.85+ &middot; Free and open source</p>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="max-w-6xl mx-auto px-4 py-20">
+      <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="bg-card border border-accent rounded-xl p-6">
+          <div class="text-brand text-2xl mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Smart Navigation</h3>
+          <ul class="text-text-secondary text-sm space-y-2">
+            <li><kbd>F12</kbd> Go to Definition</li>
+            <li><kbd>Cmd/Ctrl+F12</kbd> Go to Implementation</li>
+            <li><kbd>Alt/Option+F12</kbd> Peek Definition</li>
+          </ul>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-card border border-accent rounded-xl p-6">
+          <div class="text-brand-green text-2xl mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Intelligent Search</h3>
+          <ul class="text-text-secondary text-sm space-y-2">
+            <li>Auto-discovers <code class="text-brand-green">*Service.cs</code> and <code class="text-brand-green">*Service.py</code></li>
+            <li>Configurable search paths</li>
+            <li>Per-file <code class="text-brand-green">service_file</code> directive override</li>
+          </ul>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-card border border-accent rounded-xl p-6">
+          <div class="text-purple-400 text-2xl mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Developer Friendly</h3>
+          <ul class="text-text-secondary text-sm space-y-2">
+            <li>Zero configuration for standard projects</li>
+            <li>Smart caching for fast navigation</li>
+            <li>Detailed logging in Output panel</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo -->
+    <section id="demo" class="max-w-5xl mx-auto px-4 py-20">
+      <h2 class="text-2xl md:text-3xl font-bold text-center mb-10">See it in action</h2>
+      <div class="rounded-xl border border-accent overflow-hidden glow">
+        <img src="images/demo.gif" alt="Demo showing F12 navigation from proto file to C# implementation" loading="lazy" class="w-full">
+      </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section id="quickstart" class="max-w-5xl mx-auto px-4 py-20">
+      <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Quick Start</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-brand/20 text-brand font-bold flex items-center justify-center mx-auto mb-4 text-sm">1</div>
+          <h3 class="font-semibold mb-2">Install</h3>
+          <p class="text-text-secondary text-sm">
+            Install from the <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="text-brand hover:underline">VS Code Marketplace</a> or search "Proto Navigation" in Extensions.
+          </p>
+        </div>
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-brand-green/20 text-brand-green font-bold flex items-center justify-center mx-auto mb-4 text-sm">2</div>
+          <h3 class="font-semibold mb-2">Open a .proto file</h3>
+          <p class="text-text-secondary text-sm">
+            The extension activates automatically on any <code class="text-brand">.proto</code> file. Zero config needed for standard project layouts.
+          </p>
+        </div>
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-purple-400/20 text-purple-400 font-bold flex items-center justify-center mx-auto mb-4 text-sm">3</div>
+          <h3 class="font-semibold mb-2">Navigate</h3>
+          <p class="text-text-secondary text-sm">
+            Press <kbd>F12</kbd> on a service method to jump to C# or Python implementation. Customize paths via Command Palette.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shortcuts Table -->
+    <section class="max-w-3xl mx-auto px-4 pb-20">
+      <h2 class="text-xl font-bold text-center mb-6">Keyboard Shortcuts</h2>
+      <div class="bg-card border border-accent rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-accent text-text-secondary text-xs uppercase tracking-wider">
+              <th class="text-left px-5 py-3 font-medium">Shortcut</th>
+              <th class="text-left px-5 py-3 font-medium">Action</th>
+              <th class="text-left px-5 py-3 font-medium hidden sm:table-cell">Behavior</th>
+            </tr>
+          </thead>
+          <tbody class="text-text-primary">
+            <tr class="border-b border-accent/50">
+              <td class="px-5 py-3"><kbd>F12</kbd></td>
+              <td class="px-5 py-3">Go to Definition</td>
+              <td class="px-5 py-3 text-text-secondary hidden sm:table-cell">Jump to message definition or service implementation</td>
+            </tr>
+            <tr class="border-b border-accent/50">
+              <td class="px-5 py-3"><kbd>Cmd/Ctrl+F12</kbd></td>
+              <td class="px-5 py-3">Go to Implementation</td>
+              <td class="px-5 py-3 text-text-secondary hidden sm:table-cell">Jump to C#/Python implementation</td>
+            </tr>
+            <tr>
+              <td class="px-5 py-3"><kbd>Alt/Option+F12</kbd></td>
+              <td class="px-5 py-3">Peek Definition</td>
+              <td class="px-5 py-3 text-text-secondary hidden sm:table-cell">Preview in popup without leaving file</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-accent">
+    <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary">
+      <div>Proto Navigation v0.2.2 &middot; MIT License</div>
+      <div class="flex gap-6">
+        <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">GitHub</a>
+        <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">Marketplace</a>
+        <a href="https://github.com/YTingWu/proto-navigation/issues" target="_blank" rel="noopener" class="hover:text-text-primary transition">Report Issues</a>
+      </div>
+      <div>Made by Bruce Wu.</div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('mobile-toggle');
+    const menu = document.getElementById('mobile-menu');
+    toggle.addEventListener('click', () => menu.classList.toggle('hidden'));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.add('hidden')));
+  </script>
+
+</body>
+</html>
