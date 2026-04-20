@@ -230,17 +230,35 @@
       <h2 class="text-xl font-bold text-center mb-6">Release History</h2>
       <div class="space-y-2">
 
-        <!-- v0.2.3 -->
+        <!-- v0.2.4 -->
         <div class="bg-card border border-accent rounded-xl overflow-hidden">
           <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="true">
             <div class="flex items-center gap-3 flex-wrap">
-              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.3</span>
-              <span class="text-sm font-medium text-text-primary">Added homepage link</span>
-              <span class="text-xs text-text-secondary">2026-04-09</span>
+              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.4</span>
+              <span class="text-sm font-medium text-text-primary">Critical security patch: protobufjs RCE</span>
+              <span class="text-xs text-text-secondary">2026-04-20</span>
             </div>
             <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 rotate-180 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="cl-body px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Upgraded <code class="text-brand">protobufjs</code> to <code class="text-brand">7.5.5</code> to remediate critical arbitrary code execution vulnerability (CVE-2026-41242, CVSS 9.4)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.3 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.3</span>
+              <span class="text-sm font-medium text-text-primary">Added homepage link</span>
+              <span class="text-xs text-text-secondary">2026-04-09</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
             <p class="text-xs font-semibold uppercase tracking-wider text-brand-green mb-1">Added</p>
             <ul class="list-disc list-inside space-y-1">
               <li>Added <code class="text-brand">homepage</code> field in <code class="text-brand">package.json</code> pointing to the extension's landing page</li>
@@ -362,7 +380,7 @@
   <!-- Footer -->
   <footer class="border-t border-accent">
     <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary">
-      <div>Proto Navigation v0.2.3 &middot; MIT License</div>
+      <div>Proto Navigation v0.2.4 &middot; MIT License</div>
       <div class="flex gap-6">
         <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">GitHub</a>
         <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">Marketplace</a>

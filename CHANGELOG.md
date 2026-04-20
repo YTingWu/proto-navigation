@@ -4,6 +4,11 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.4] – 2026-04-20
+
+### Security
+- Upgraded `protobufjs` to `7.5.5` to remediate critical arbitrary code execution vulnerability (CVE-2026-41242, CVSS 9.4)
+
 ## [0.2.3] – 2026-04-09
 
 ### Added
