@@ -4,6 +4,11 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.5] – 2026-05-11
+
+### Security
+- Added `fast-uri` override to `^3.1.2` to remediate path traversal via percent-encoded dot segments (GHSA-69h6-vmm5-x7h2, transitive via `webpack` → `schema-utils` → `ajv`)
+
 ## [0.2.4] – 2026-04-20
 
 ### Security

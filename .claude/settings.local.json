@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm audit:*)",
+      "Bash(python3:*)",
+      "Bash(npm update *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

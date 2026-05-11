@@ -8,6 +8,7 @@
 
 ## 📦 Release Notes
 
+- **v0.2.5** — Patched `fast-uri` path traversal vulnerability (GHSA-69h6-vmm5-x7h2) via transitive dependency override.
 - **v0.2.4** — Patched critical RCE vulnerability in `protobufjs` (CVE-2026-41242, CVSS 9.4).
 - **v0.2.3** — Added `homepage` link to the extension's landing page.
 - **v0.2.2** — Patched moderate severity vulnerabilities in `serialize-javascript`, `picomatch`, and `brace-expansion`. No user-facing configuration changes.

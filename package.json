@@ -4,7 +4,7 @@
   "displayName": "Proto Navigation",
   "description": "Navigate seamlessly from .proto files to C# and Python service implementations with F12 and Cmd+F12",
   "homepage": "https://proto-navigation.brucewu.dev/",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0",
@@ -109,6 +109,7 @@
     "diff": "^8.0.3",
     "serialize-javascript": "^7.0.5",
     "picomatch": "^2.3.2",
-    "brace-expansion": "^2.0.2"
+    "brace-expansion": "^2.0.2",
+    "fast-uri": "^3.1.2"
   }
 }
