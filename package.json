@@ -4,7 +4,7 @@
   "displayName": "Proto Navigation",
   "description": "Navigate seamlessly from .proto files to C# and Python service implementations with F12 and Cmd+F12",
   "homepage": "https://proto-navigation.brucewu.dev/",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0",
@@ -76,7 +76,6 @@
       }
     }
   },
-
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
@@ -103,7 +102,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "protobufjs": "^7.2.6"
+    "protobufjs": "^7.5.8"
   },
   "overrides": {
     "diff": "^8.0.3",

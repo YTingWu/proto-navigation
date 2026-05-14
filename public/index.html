@@ -230,17 +230,45 @@
       <h2 class="text-xl font-bold text-center mb-6">Release History</h2>
       <div class="space-y-2">
 
-        <!-- v0.2.5 -->
+        <!-- v0.2.6 -->
         <div class="bg-card border border-accent rounded-xl overflow-hidden">
           <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="true">
             <div class="flex items-center gap-3 flex-wrap">
-              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.5</span>
-              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri path traversal</span>
-              <span class="text-xs text-text-secondary">2026-05-11</span>
+              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.6</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: protobufjs DoS, code injection &amp; prototype pollution</span>
+              <span class="text-xs text-text-secondary">2026-05-14</span>
             </div>
             <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 rotate-180 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="cl-body px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Upgraded <code class="text-brand">protobufjs</code> to <code class="text-brand">7.5.8</code> (bringing transitive <code class="text-brand">@protobufjs/utf8</code> to <code class="text-brand">1.1.1</code>) to remediate 7 Dependabot advisories:
+                <ul class="list-disc list-inside ml-4 mt-1 space-y-0.5">
+                  <li>GHSA-685m-2w69-288q (high) — DoS via unbounded protobuf recursion</li>
+                  <li>GHSA-66ff-xgx4-vchm (high) — Code injection through bytes field defaults in generated <code class="text-brand">toObject</code></li>
+                  <li>GHSA-75px-5xx7-5xc7 (high) — Code-generation gadget after prototype pollution</li>
+                  <li>GHSA-jvwf-75h9-cwgg (high) — Process-wide DoS through unsafe option paths</li>
+                  <li>GHSA-2pr8-phx7-x9h3 (medium) — DoS from crafted field names</li>
+                  <li>GHSA-fx83-v9x8-x52w (medium) — Prototype injection in generated message constructors</li>
+                  <li>GHSA-q6x5-8v7m-xcrf (medium) — Overlong UTF-8 decoding</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.5 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.5</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri path traversal</span>
+              <span class="text-xs text-text-secondary">2026-05-11</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
             <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
             <ul class="list-disc list-inside space-y-1">
               <li>Added <code class="text-brand">fast-uri</code> override to <code class="text-brand">^3.1.2</code> to remediate path traversal via percent-encoded dot segments (GHSA-69h6-vmm5-x7h2, transitive via <code class="text-brand">webpack</code> → <code class="text-brand">schema-utils</code> → <code class="text-brand">ajv</code>)</li>
@@ -398,7 +426,7 @@
   <!-- Footer -->
   <footer class="border-t border-accent">
     <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary">
-      <div>Proto Navigation v0.2.5 &middot; MIT License</div>
+      <div>Proto Navigation v0.2.6 &middot; MIT License</div>
       <div class="flex gap-6">
         <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">GitHub</a>
         <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">Marketplace</a>

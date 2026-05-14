@@ -8,6 +8,7 @@
 
 ## 📦 Release Notes
 
+- **v0.2.6** — Upgraded `protobufjs` to `7.5.8` to remediate 7 Dependabot advisories (DoS, code injection, prototype pollution, overlong UTF-8).
 - **v0.2.5** — Patched `fast-uri` path traversal vulnerability (GHSA-69h6-vmm5-x7h2) via transitive dependency override.
 - **v0.2.4** — Patched critical RCE vulnerability in `protobufjs` (CVE-2026-41242, CVSS 9.4).
 - **v0.2.3** — Added `homepage` link to the extension's landing page.

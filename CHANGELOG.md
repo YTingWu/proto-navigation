@@ -4,6 +4,18 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.6] – 2026-05-14
+
+### Security
+- Upgraded `protobufjs` to `^7.5.8` (resolves to `7.5.8`, bringing transitive `@protobufjs/utf8` to `1.1.1`) to remediate 7 advisories on `protobufjs ≤7.5.5` and `@protobufjs/utf8 ≤1.1.0`:
+  - GHSA-685m-2w69-288q (high) — DoS via unbounded protobuf recursion
+  - GHSA-66ff-xgx4-vchm (high) — Code injection through bytes field defaults in generated `toObject` code
+  - GHSA-75px-5xx7-5xc7 (high) — Code-generation gadget after prototype pollution
+  - GHSA-jvwf-75h9-cwgg (high) — Process-wide DoS through unsafe option paths
+  - GHSA-2pr8-phx7-x9h3 (medium) — DoS from crafted field names in generated code
+  - GHSA-fx83-v9x8-x52w (medium) — Prototype injection in generated message constructors
+  - GHSA-q6x5-8v7m-xcrf (medium) — Overlong UTF-8 decoding in `@protobufjs/utf8`
+
 ## [0.2.5] – 2026-05-11
 
 ### Security
