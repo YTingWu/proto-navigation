@@ -4,6 +4,13 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.7] – 2026-07-07
+
+### Security
+- Upgraded `protobufjs` to `^7.6.5` (from `7.5.8`) to remediate a denial-of-service advisory:
+  - GHSA — Denial of service through unbounded `Any` expansion during JSON conversion (Dependabot alert #54; requires `protobufjs ≥7.6.3`)
+- Added `js-yaml` override to `^4.3.0` to remediate a quadratic-complexity DoS in merge key handling via repeated aliases (GHSA-h67p-54hq-rp68, dev-only transitive via `eslint` and `@vscode/test-cli` → `mocha`)
+
 ## [0.2.6] – 2026-05-14
 
 ### Security
