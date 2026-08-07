@@ -10,6 +10,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Upgraded `fast-uri` override to `^3.1.5` (from `^3.1.2`) to remediate two host-confusion advisories that let attacker-crafted URIs bypass host-based allowlist/SSRF checks by parsing differently in `fast-uri` than in Node's WHATWG URL parser (transitive via `webpack` → `schema-utils` → `ajv`):
   - GHSA-v2hh-gcrm-f6hx (CVE-2026-16221, high, CVSS 7.5) — literal backslash not treated as an authority delimiter; patched in `3.1.4`
   - GHSA-7p8r-x3mc-p8w7 (CVE-2026-18446, high, CVSS 7.5) — backslash/forward-slash equivalence mismatch vs. Node's URL parser; patched in `3.1.5`
+- Upgraded `brace-expansion` override to `^2.1.4` (from `^2.0.2`, dev-only transitive via `eslint`/`mocha`/`c8`) to remediate three DoS advisories:
+  - GHSA-3jxr-9vmj-r5cp (high) — exponential-time expansion of consecutive non-expanding `{}` groups
+  - GHSA-mh99-v99m-4gvg (high) — unbounded expansion length causing an out-of-memory crash
+  - GHSA-rgw5-rvv9-x895 (high) — unbounded intermediate arrays bypassing the prior mitigation
+- Upgraded `js-yaml` override to `^4.3.1` (from `^4.3.0`, dev-only transitive via `eslint`) to remediate GHSA-5p4m-2wfm-xmqj (CVE-2026-59870, high) — quadratic CPU consumption in `!!omap` resolution
 
 ## [0.2.7] – 2026-07-07
 

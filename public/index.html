@@ -235,7 +235,7 @@
           <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="true">
             <div class="flex items-center gap-3 flex-wrap">
               <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.8</span>
-              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri host-confusion / SSRF bypass</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri, brace-expansion &amp; js-yaml DoS/SSRF fixes</span>
               <span class="text-xs text-text-secondary">2026-08-07</span>
             </div>
             <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 rotate-180 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
@@ -249,6 +249,14 @@
                   <li>GHSA-7p8r-x3mc-p8w7 (CVE-2026-18446, high) — backslash/forward-slash equivalence mismatch</li>
                 </ul>
               </li>
+              <li>Upgraded <code class="text-brand">brace-expansion</code> override to <code class="text-brand">2.1.4</code> (from <code class="text-brand">2.0.2</code>, dev-only transitive via <code class="text-brand">eslint</code>/<code class="text-brand">mocha</code>/<code class="text-brand">c8</code>) to remediate three DoS advisories:
+                <ul class="list-disc list-inside ml-4 mt-1 space-y-0.5">
+                  <li>GHSA-3jxr-9vmj-r5cp (high) — exponential-time expansion of consecutive non-expanding <code class="text-brand">{}</code> groups</li>
+                  <li>GHSA-mh99-v99m-4gvg (high) — unbounded expansion length causing an out-of-memory crash</li>
+                  <li>GHSA-rgw5-rvv9-x895 (high) — unbounded intermediate arrays bypassing the prior mitigation</li>
+                </ul>
+              </li>
+              <li>Upgraded <code class="text-brand">js-yaml</code> override to <code class="text-brand">4.3.1</code> (from <code class="text-brand">4.3.0</code>, dev-only transitive via <code class="text-brand">eslint</code>) to remediate GHSA-5p4m-2wfm-xmqj (CVE-2026-59870, high) — quadratic CPU consumption in <code class="text-brand">!!omap</code> resolution</li>
             </ul>
           </div>
         </div>
