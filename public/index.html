@@ -230,17 +230,40 @@
       <h2 class="text-xl font-bold text-center mb-6">Release History</h2>
       <div class="space-y-2">
 
-        <!-- v0.2.7 -->
+        <!-- v0.2.8 -->
         <div class="bg-card border border-accent rounded-xl overflow-hidden">
           <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="true">
             <div class="flex items-center gap-3 flex-wrap">
-              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.7</span>
-              <span class="text-sm font-medium text-text-primary">Security patch: protobufjs DoS via unbounded Any expansion</span>
-              <span class="text-xs text-text-secondary">2026-07-07</span>
+              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.8</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri host-confusion / SSRF bypass</span>
+              <span class="text-xs text-text-secondary">2026-08-07</span>
             </div>
             <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 rotate-180 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="cl-body px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Upgraded <code class="text-brand">fast-uri</code> override to <code class="text-brand">3.1.5</code> (from <code class="text-brand">3.1.2</code>) to remediate two high-severity host-confusion advisories letting crafted URIs bypass host allowlist/SSRF checks by parsing differently than Node's WHATWG URL parser (transitive via <code class="text-brand">webpack</code> → <code class="text-brand">schema-utils</code> → <code class="text-brand">ajv</code>):
+                <ul class="list-disc list-inside ml-4 mt-1 space-y-0.5">
+                  <li>GHSA-v2hh-gcrm-f6hx (CVE-2026-16221, high) — literal backslash not treated as an authority delimiter</li>
+                  <li>GHSA-7p8r-x3mc-p8w7 (CVE-2026-18446, high) — backslash/forward-slash equivalence mismatch</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.7 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.7</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: protobufjs DoS via unbounded Any expansion</span>
+              <span class="text-xs text-text-secondary">2026-07-07</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
             <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
             <ul class="list-disc list-inside space-y-1">
               <li>Upgraded <code class="text-brand">protobufjs</code> to <code class="text-brand">7.6.5</code> to remediate denial of service through unbounded <code class="text-brand">Any</code> expansion during JSON conversion (Dependabot alert #54)</li>
@@ -445,7 +468,7 @@
   <!-- Footer -->
   <footer class="border-t border-accent">
     <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary">
-      <div>Proto Navigation v0.2.7 &middot; MIT License</div>
+      <div>Proto Navigation v0.2.8 &middot; MIT License</div>
       <div class="flex gap-6">
         <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">GitHub</a>
         <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">Marketplace</a>

@@ -4,6 +4,13 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.8] – 2026-08-07
+
+### Security
+- Upgraded `fast-uri` override to `^3.1.5` (from `^3.1.2`) to remediate two host-confusion advisories that let attacker-crafted URIs bypass host-based allowlist/SSRF checks by parsing differently in `fast-uri` than in Node's WHATWG URL parser (transitive via `webpack` → `schema-utils` → `ajv`):
+  - GHSA-v2hh-gcrm-f6hx (CVE-2026-16221, high, CVSS 7.5) — literal backslash not treated as an authority delimiter; patched in `3.1.4`
+  - GHSA-7p8r-x3mc-p8w7 (CVE-2026-18446, high, CVSS 7.5) — backslash/forward-slash equivalence mismatch vs. Node's URL parser; patched in `3.1.5`
+
 ## [0.2.7] – 2026-07-07
 
 ### Security
