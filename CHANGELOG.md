@@ -4,6 +4,18 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.9] – 2026-09-07
+
+### Security
+- Upgraded `fast-uri` override to `^4.1.4` (from `^3.1.5`) to remediate four advisories where attacker-crafted URIs bypass host-allowlist/SSRF checks (transitive via `webpack` → `schema-utils` → `ajv`):
+  - GHSA-5jgf-p345-68v8 (high) — host confusion via skipped IDN canonicalization on scheme-relative references
+  - GHSA-f65p-4m7j-42xc (high) — SSRF via malformed IPv6 normalization
+  - GHSA-fph4-wmhf-6fwf (high) — SSRF via repeated hostname percent-decoding
+  - GHSA-jqff-g426-hqxp (high) — host confusion via percent-encoded scheme normalization
+- Added `browserslist` override `^4.28.7` (dev-only transitive via `webpack`) to remediate two advisories:
+  - GHSA-c83g-rgw3-j3cx (high) — unbounded memory growth via distinct query results leading to OOM
+  - GHSA-73wf-gq9-2v4g (high) — uncaught crash via prototype write through untrusted `browserslist-stats.json`
+
 ## [0.2.8] – 2026-08-07
 
 ### Security

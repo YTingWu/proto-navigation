@@ -231,17 +231,48 @@
       <h2 class="text-xl font-bold text-center mb-6">Release History</h2>
       <div class="space-y-2">
 
-        <!-- v0.2.8 -->
+        <!-- v0.2.9 -->
         <div class="bg-card border border-accent rounded-xl overflow-hidden">
           <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="true">
             <div class="flex items-center gap-3 flex-wrap">
-              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.8</span>
-              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri, brace-expansion &amp; js-yaml DoS/SSRF fixes</span>
-              <span class="text-xs text-text-secondary">2026-08-07</span>
+              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.9</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri SSRF/host-confusion &amp; browserslist DoS fixes</span>
+              <span class="text-xs text-text-secondary">2026-09-07</span>
             </div>
             <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 rotate-180 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="cl-body px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Upgraded <code class="text-brand">fast-uri</code> override to <code class="text-brand">^4.1.4</code> (from <code class="text-brand">^3.1.5</code>) to remediate four high-severity advisories where crafted URIs bypass host allowlist/SSRF checks (transitive via <code class="text-brand">webpack</code> → <code class="text-brand">schema-utils</code> → <code class="text-brand">ajv</code>):
+                <ul class="list-disc list-inside ml-4 mt-1 space-y-0.5">
+                  <li>GHSA-5jgf-p345-68v8 (high) — host confusion via skipped IDN canonicalization on scheme-relative references</li>
+                  <li>GHSA-f65p-4m7j-42xc (high) — SSRF via malformed IPv6 normalization</li>
+                  <li>GHSA-fph4-wmhf-6fwf (high) — SSRF via repeated hostname percent-decoding</li>
+                  <li>GHSA-jqff-g426-hqxp (high) — host confusion via percent-encoded scheme normalization</li>
+                </ul>
+              </li>
+              <li>Added <code class="text-brand">browserslist</code> override <code class="text-brand">^4.28.7</code> (dev-only transitive via <code class="text-brand">webpack</code>) to remediate two high-severity advisories:
+                <ul class="list-disc list-inside ml-4 mt-1 space-y-0.5">
+                  <li>GHSA-c83g-rgw3-j3cx (high) — unbounded memory growth via distinct query results leading to OOM</li>
+                  <li>GHSA-73wf-gq9-2v4g (high) — uncaught crash via prototype write through untrusted <code class="text-brand">browserslist-stats.json</code></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.8 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.8</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri, brace-expansion &amp; js-yaml DoS/SSRF fixes</span>
+              <span class="text-xs text-text-secondary">2026-08-07</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
             <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
             <ul class="list-disc list-inside space-y-1">
               <li>Upgraded <code class="text-brand">fast-uri</code> override to <code class="text-brand">3.1.5</code> (from <code class="text-brand">3.1.2</code>) to remediate two high-severity host-confusion advisories letting crafted URIs bypass host allowlist/SSRF checks by parsing differently than Node's WHATWG URL parser (transitive via <code class="text-brand">webpack</code> → <code class="text-brand">schema-utils</code> → <code class="text-brand">ajv</code>):
@@ -477,7 +508,7 @@
   <!-- Footer -->
   <footer class="border-t border-accent">
     <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary">
-      <div>Proto Navigation v0.2.8 &middot; MIT License</div>
+      <div>Proto Navigation v0.2.9 &middot; MIT License</div>
       <div class="flex gap-6">
         <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">GitHub</a>
         <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">Marketplace</a>
