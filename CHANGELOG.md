@@ -4,6 +4,11 @@ All notable changes to the "proto-navigation" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.10] – 2026-09-17
+
+### Security
+- Upgraded `js-yaml` override to `^5.4.2` (from `^4.3.1`, dev-only transitive via `eslint` → `@eslint/eslintrc` and `@vscode/test-cli` → `mocha`) to remediate GHSA-2883-xcg3-v3hh (CVE-2026-84375, high) — `maxTotalMergeKeys` did not count empty mapping merge sources, allowing quadratic CPU consumption from a crafted YAML document. Patched upstream in `4.3.2`; jumped to the latest `5.4.2` per project policy of tracking the newest release rather than the minimum patched version. Verified both call sites (`eslintrc`'s and `mocha`'s config loaders) only use the unaffected `yaml.load()` API — `safeLoad`/`safeDump` and other APIs removed in v5 are not used — and confirmed with a clean `npm run lint`, `npm run compile`, `npm run compile-tests`, and `npm test` (31/31 passing).
+
 ## [0.2.9] – 2026-09-07
 
 ### Security

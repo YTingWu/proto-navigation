@@ -231,17 +231,35 @@
       <h2 class="text-xl font-bold text-center mb-6">Release History</h2>
       <div class="space-y-2">
 
-        <!-- v0.2.9 -->
+        <!-- v0.2.10 -->
         <div class="bg-card border border-accent rounded-xl overflow-hidden">
           <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="true">
             <div class="flex items-center gap-3 flex-wrap">
-              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.9</span>
-              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri SSRF/host-confusion &amp; browserslist DoS fixes</span>
-              <span class="text-xs text-text-secondary">2026-09-07</span>
+              <span class="text-xs font-mono bg-brand/20 text-brand px-2 py-0.5 rounded">v0.2.10</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: js-yaml quadratic-CPU DoS fix</span>
+              <span class="text-xs text-text-secondary">2026-09-17</span>
             </div>
             <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 rotate-180 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div class="cl-body px-5 pb-4 text-sm text-text-secondary">
+            <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>Upgraded <code class="text-brand">js-yaml</code> override to <code class="text-brand">^5.4.2</code> (from <code class="text-brand">^4.3.1</code>, dev-only transitive via <code class="text-brand">eslint</code> → <code class="text-brand">@eslint/eslintrc</code> and <code class="text-brand">@vscode/test-cli</code> → <code class="text-brand">mocha</code>) to remediate GHSA-2883-xcg3-v3hh (CVE-2026-84375, high) — <code class="text-brand">maxTotalMergeKeys</code> did not count empty mapping merge sources, allowing quadratic CPU consumption from a crafted YAML document. Upstream patched this in <code class="text-brand">4.3.2</code>; jumped straight to the latest <code class="text-brand">5.4.2</code> release instead of the minimum patched version.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- v0.2.9 -->
+        <div class="bg-card border border-accent rounded-xl overflow-hidden">
+          <button class="cl-toggle w-full flex items-center justify-between px-5 py-4 text-left" aria-expanded="false">
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-mono bg-accent/60 text-text-secondary px-2 py-0.5 rounded">v0.2.9</span>
+              <span class="text-sm font-medium text-text-primary">Security patch: fast-uri SSRF/host-confusion &amp; browserslist DoS fixes</span>
+              <span class="text-xs text-text-secondary">2026-09-07</span>
+            </div>
+            <svg class="cl-chevron w-4 h-4 text-text-secondary transition-transform duration-200 shrink-0 ml-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="cl-body hidden px-5 pb-4 text-sm text-text-secondary">
             <p class="text-xs font-semibold uppercase tracking-wider text-yellow-400 mb-1">Security</p>
             <ul class="list-disc list-inside space-y-1">
               <li>Upgraded <code class="text-brand">fast-uri</code> override to <code class="text-brand">^4.1.4</code> (from <code class="text-brand">^3.1.5</code>) to remediate four high-severity advisories where crafted URIs bypass host allowlist/SSRF checks (transitive via <code class="text-brand">webpack</code> → <code class="text-brand">schema-utils</code> → <code class="text-brand">ajv</code>):
@@ -508,7 +526,7 @@
   <!-- Footer -->
   <footer class="border-t border-accent">
     <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary">
-      <div>Proto Navigation v0.2.9 &middot; MIT License</div>
+      <div>Proto Navigation v0.2.10 &middot; MIT License</div>
       <div class="flex gap-6">
         <a href="https://github.com/YTingWu/proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">GitHub</a>
         <a href="https://marketplace.visualstudio.com/items?itemName=BruceWu.proto-navigation" target="_blank" rel="noopener" class="hover:text-text-primary transition">Marketplace</a>

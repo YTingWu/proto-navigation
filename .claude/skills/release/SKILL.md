@@ -1,6 +1,6 @@
 ---
 name: release
-description: "Run the full release checklist for proto-navigation: build, test, version bump, CHANGELOG, README, and public/index.html (footer + releases accordion). Trigger with /release."
+description: "Run the full release checklist for proto-navigation: build, test, version bump, CHANGELOG, README, public/index.html (footer + releases accordion), and public/sitemap.xml lastmod. Trigger with /release."
 ---
 
 # Release Checklist
@@ -109,6 +109,23 @@ After inserting the new entry, change the **previous latest entry's** badge from
 
 ---
 
+## 8. Update `public/sitemap.xml`
+
+Set `<lastmod>` to the release date (YYYY-MM-DD) for the site's `<url>` entry:
+
+```xml
+<url>
+  <loc>https://proto-navigation.brucewu.dev/</loc>
+  <lastmod>YYYY-MM-DD</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>1.0</priority>
+</url>
+```
+
+If `<lastmod>` is missing, add it directly after `<loc>`.
+
+---
+
 ## Checklist Summary
 
 - [ ] `npm run compile` passes
@@ -118,3 +135,4 @@ After inserting the new entry, change the **previous latest entry's** badge from
 - [ ] `README.md` Release Notes updated
 - [ ] `public/index.html` footer version updated
 - [ ] `public/index.html` Releases accordion updated (new entry at top, previous entry collapsed)
+- [ ] `public/sitemap.xml` `<lastmod>` updated to the release date

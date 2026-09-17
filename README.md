@@ -8,6 +8,7 @@
 
 ## 📦 Release Notes
 
+- **v0.2.10** — Upgraded `js-yaml` override to `5.4.2` (from `4.3.1`, CVE-2026-84375, high — quadratic-CPU DoS via empty merge-key mappings). Dev-only transitive fix via `eslint`/`mocha`.
 - **v0.2.9** — Upgraded `fast-uri` override to `4.x` latest (4 SSRF/host-confusion advisories) and added `browserslist` override `4.28.7+` (2 DoS advisories). All devDependency transitive fixes.
 - **v0.2.8** — Upgraded `fast-uri` to `3.1.5` (host-confusion/SSRF bypass, CVE-2026-16221, CVE-2026-18446), `brace-expansion` to `2.1.4` (DoS), and `js-yaml` to `4.3.1` (DoS, CVE-2026-59870). All dev-tooling transitive dependencies.
 - **v0.2.7** — Upgraded `protobufjs` to `7.6.5` (DoS via unbounded `Any` expansion during JSON conversion) and pinned `js-yaml` to `4.3.0` (dev-only DoS).
